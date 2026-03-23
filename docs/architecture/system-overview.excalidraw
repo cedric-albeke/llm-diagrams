@@ -1,0 +1,152 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "elements": [
+    {
+      "id": "zone_zone_backend",
+      "type": "rectangle",
+      "x": 0,
+      "y": 0,
+      "width": 212,
+      "height": 332,
+      "strokeColor": "#eebefa",
+      "backgroundColor": "#eebefa",
+      "opacity": 10,
+      "strokeWidth": 1,
+      "roughness": 0,
+      "fillStyle": "solid",
+      "roundness": null
+    },
+    {
+      "id": "zone_zone_backend_label",
+      "type": "text",
+      "x": 8,
+      "y": 4,
+      "text": "Backend",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top"
+    },
+    {
+      "id": "zone_zone_shared",
+      "type": "rectangle",
+      "x": 0,
+      "y": 72,
+      "width": 212,
+      "height": 160,
+      "strokeColor": "#e9ecef",
+      "backgroundColor": "#e9ecef",
+      "opacity": 10,
+      "strokeWidth": 1,
+      "roughness": 0,
+      "fillStyle": "solid",
+      "roundness": null
+    },
+    {
+      "id": "zone_zone_shared_label",
+      "type": "text",
+      "x": 8,
+      "y": 76,
+      "text": "Shared",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top"
+    },
+    {
+      "id": "archdiagram",
+      "type": "rectangle",
+      "x": 12,
+      "y": 12,
+      "width": 160,
+      "height": 80,
+      "strokeColor": "#862e9c",
+      "backgroundColor": "#eebefa",
+      "opacity": 100,
+      "strokeWidth": 2,
+      "roughness": 0,
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "id": "archdiagram_label",
+      "type": "text",
+      "x": 12,
+      "y": 12,
+      "width": 160,
+      "height": 80,
+      "text": "Archdiagram",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle"
+    },
+    {
+      "id": "root",
+      "type": "rectangle",
+      "x": 12,
+      "y": 112,
+      "width": 160,
+      "height": 80,
+      "strokeColor": "#495057",
+      "backgroundColor": "#e9ecef",
+      "opacity": 100,
+      "strokeWidth": 2,
+      "roughness": 0,
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "id": "root_label",
+      "type": "text",
+      "x": 12,
+      "y": 112,
+      "width": 160,
+      "height": 80,
+      "text": "Root",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle"
+    },
+    {
+      "id": "node_modules",
+      "type": "rectangle",
+      "x": 12,
+      "y": 212,
+      "width": 160,
+      "height": 80,
+      "strokeColor": "#862e9c",
+      "backgroundColor": "#eebefa",
+      "opacity": 100,
+      "strokeWidth": 2,
+      "roughness": 0,
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "id": "node_modules_label",
+      "type": "text",
+      "x": 12,
+      "y": 212,
+      "width": 160,
+      "height": 80,
+      "text": "Node_modules",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle"
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "viewBackgroundColor": "#ffffff"
+  }
+}

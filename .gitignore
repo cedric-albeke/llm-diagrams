@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.log
+.sisyphus/evidence/
+.sisyphus/notepads/
+.sisyphus/drafts/

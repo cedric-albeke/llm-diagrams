@@ -1,0 +1,24 @@
+{
+  "name": "llm-diagrams",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Automated architecture diagram generator",
+  "scripts": {
+    "test": "vitest run",
+    "docs:diagram": "tsx scripts/generate-architecture-diagram.ts",
+    "docs:diagram:static": "tsx scripts/generate-architecture-diagram.ts --mode static",
+    "docs:diagram:full": "tsx scripts/generate-architecture-diagram.ts --mode full"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "@mermaid-js/mermaid-cli": "latest",
+    "@types/node": "latest",
+    "dependency-cruiser": "latest",
+    "elkjs": "latest",
+    "ts-morph": "latest",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vitest": "^2.0.0",
+    "zod": "latest"
+  }
+}
