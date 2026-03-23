@@ -20,6 +20,10 @@ describe('parseCliFlags', () => {
     const flags = parseCliFlags(['--mode', 'static'])
     expect(flags.llm?.provider).toBe('none')
   })
+  it('parses --mode subscription sets llm.provider to claude-subscription', () => {
+    const flags = parseCliFlags(['--mode', 'subscription'])
+    expect(flags.llm?.provider).toBe('claude-subscription')
+  })
   it('parses --output-dir', () => {
     const flags = parseCliFlags(['--output-dir', 'out'])
     expect(flags.outputDir).toBe('out')

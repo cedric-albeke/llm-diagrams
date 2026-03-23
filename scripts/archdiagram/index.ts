@@ -157,6 +157,8 @@ export async function runPipelineFromFlags(argv: string[]): Promise<PipelineResu
       if (apiKey) {
         config.llm = { ...config.llm, provider: 'anthropic', apiKey }
       }
+    } else if (modeValue === 'subscription') {
+      config.llm = { ...config.llm, provider: 'claude-subscription' }
     } else if (modeValue === 'static') {
       config.llm = { ...config.llm, provider: 'none' }
     }

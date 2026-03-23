@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest'
+import fs from 'fs'
+import path from 'path'
 import { orchestrateLLMReasoning } from '../../scripts/archdiagram/phases/reason.js'
 import { loadExpectedGraph } from './helpers.js'
 
@@ -60,5 +62,30 @@ describe('orchestrateLLMReasoning', () => {
     expect(rootGroup).toBeDefined()
     expect(rootGroup!.files).toContain('index.ts')
     expect(rootGroup!.files).toContain('app.ts')
+  })
+
+  it('subscription mode without auth token falls back to directory grouping', async () => {
+    const originalHome = process.env.HOME
+    const originalFetch = global.fetch
+    const tempHome = path.join('/tmp', `llm-diagrams-no-creds-${Date.now()}`)
+
+    fs.mkdirSync(tempHome, { recursive: true })
+    process.env.HOME = tempHome
+    delete process.env.ANTHROPIC_AUTH_TOKEN
+    delete process.env.CLAUDE_CODE_OAUTH_TOKEN
+    global.fetch = ((() => {
+      throw new Error('fetch should not be called in fallback mode')
+    }) as unknown) as typeof fetch
+
+    try {
+      const graph = loadExpectedGraph()
+      const result = await orchestrateLLMReasoning(graph, { provider: 'claude-subscription' })
+
+      expect(result.c4Level).toBe(1)
+      expect(result.groups.length).toBeGreaterThan(0)
+    } finally {
+      process.env.HOME = originalHome
+      global.fetch = originalFetch
+    }
   })
 })

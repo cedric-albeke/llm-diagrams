@@ -146,7 +146,7 @@ export interface PipelineResult {
 // Config Types
 // ============================================
 
-export type LLMProvider = 'anthropic' | 'none';
+export type LLMProvider = 'anthropic' | 'claude-subscription' | 'none';
 
 export interface LLMConfig {
   provider: LLMProvider;

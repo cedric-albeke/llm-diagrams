@@ -11,7 +11,7 @@ Usage: npx tsx scripts/generate-architecture-diagram.ts [options]
 
 Options:
   --help              Show this help
-  --mode              static|full|auto (default: auto)
+  --mode              static|full|subscription|auto (default: auto)
   --src-dir           Source directory (default: src)
   --output-dir        Output directory (default: docs/architecture)
   --exclude           Comma-separated patterns to exclude
@@ -23,6 +23,7 @@ Options:
 Examples:
   npm run docs:diagram:static
   npx tsx scripts/generate-architecture-diagram.ts --mode static --src-dir src
+  npm run docs:diagram -- --mode subscription
   ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
   `)
 }
@@ -51,6 +52,8 @@ async function main(): Promise<void> {
       process.exit(1)
     }
     config = { ...config, llm: { ...config.llm, provider: 'anthropic', apiKey } }
+  } else if (modeArg === 'subscription') {
+    config = { ...config, llm: { ...config.llm, provider: 'claude-subscription' } }
   } else if (modeArg === 'static') {
     config = { ...config, llm: { ...config.llm, provider: 'none' } }
   } else {

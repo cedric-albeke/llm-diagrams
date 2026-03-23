@@ -88,9 +88,14 @@ export function parseCliFlags(argv: string[]): Partial<ArchDiagramConfig> {
 
       case '--mode':
         if (next && !next.startsWith('--')) {
+          const provider = next === 'full'
+            ? 'anthropic'
+            : next === 'subscription'
+              ? 'claude-subscription'
+              : 'none'
           result.llm = {
             ...result.llm,
-            provider: next === 'full' ? 'anthropic' : 'none',
+            provider,
           } as ArchDiagramConfig['llm']
           i++
         }

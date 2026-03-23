@@ -10,6 +10,14 @@ vi.mock('@anthropic-ai/sdk', () => {
   return { default: MockAnthropic }
 })
 
+vi.mock('node:child_process', () => {
+  const mockExecFileSync = vi.fn()
+  return {
+    execFileSync: mockExecFileSync,
+    __mockExecFileSync: mockExecFileSync,
+  }
+})
+
 import { callLLM, batchAnalyze } from '../../scripts/archdiagram/phases/reason.js'
 import type { LLMConfig, ModuleNode } from '../../scripts/archdiagram/types.js'
 
@@ -17,6 +25,11 @@ const STATIC_CONFIG: LLMConfig = { provider: 'none' }
 const LLM_CONFIG: LLMConfig = {
   provider: 'anthropic',
   apiKey: 'test-key-abc123',
+  model: 'test-model',
+  temperature: 0.1,
+}
+const SUBSCRIPTION_CONFIG: LLMConfig = {
+  provider: 'claude-subscription',
   model: 'test-model',
   temperature: 0.1,
 }
@@ -28,6 +41,11 @@ function makeNode(path: string): ModuleNode {
 async function getMockCreate() {
   const mod = await import('@anthropic-ai/sdk')
   return (mod.default as unknown as Record<string, unknown>)._mockCreate as ReturnType<typeof vi.fn>
+}
+
+async function getMockExecFileSync() {
+  const mod = await import('node:child_process')
+  return (mod as unknown as Record<string, unknown>).__mockExecFileSync as ReturnType<typeof vi.fn>
 }
 
 describe('batchAnalyze — static mode (provider: none)', () => {
@@ -92,6 +110,38 @@ describe('callLLM — API key handling', () => {
     const result = await callLLM('sys', 'user', schema, configNoKey)
     expect(result).toEqual({ value: 'hello' })
     delete process.env.ANTHROPIC_API_KEY
+  })
+})
+
+describe('callLLM — subscription mode', () => {
+  beforeEach(() => {
+    delete process.env.ANTHROPIC_API_KEY
+    delete process.env.ANTHROPIC_AUTH_TOKEN
+    delete process.env.CLAUDE_CODE_OAUTH_TOKEN
+  })
+
+  it('does not require ANTHROPIC_API_KEY in subscription mode', async () => {
+    const mockExecFileSync = await getMockExecFileSync()
+    mockExecFileSync.mockClear()
+    mockExecFileSync.mockReturnValue('{"ok":true}')
+
+    const schema = z.object({ ok: z.boolean() })
+    const result = await callLLM('sys', 'user', schema, SUBSCRIPTION_CONFIG)
+    expect(result).toEqual({ ok: true })
+    expect(mockExecFileSync).toHaveBeenCalled()
+  })
+
+  it('surfaces HTTP errors from subscription endpoint clearly', async () => {
+    const mockExecFileSync = await getMockExecFileSync()
+    mockExecFileSync.mockClear()
+    mockExecFileSync.mockImplementation(() => {
+      throw new Error('not authenticated')
+    })
+
+    const schema = z.object({ ok: z.boolean() })
+    await expect(callLLM('sys', 'user', schema, SUBSCRIPTION_CONFIG)).rejects.toThrow(
+      'Claude subscription execution failed'
+    )
   })
 })
 

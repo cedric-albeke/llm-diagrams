@@ -1,6 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { z } from 'zod'
 import type { LLMConfig, ModuleNode, ImportEdge, FileSummary, ImportGraph, ArchitectureGraph, ModuleGroup, ModuleRelationship } from '../types.js'
+import { getLLMAdapter } from './llm/index.js'
+import { hasClaudeSubscriptionCredentialSource } from './llm/claude-subscription-adapter.js'
 
 export const FILE_ANALYST_SYSTEM_PROMPT = `You are a TypeScript codebase analyst.
 Your job is to analyze TypeScript source files and classify each file's purpose and role.
@@ -142,22 +143,8 @@ export async function callLLM<T>(
     throw new Error('LLM provider is none — cannot make API calls')
   }
 
-  const apiKey = config.apiKey ?? process.env.ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set')
-
-  const client = new Anthropic({ apiKey })
-
-  const response = await client.messages.create({
-    model: config.model ?? 'claude-sonnet-4-20250514',
-    max_tokens: 4096,
-    temperature: config.temperature ?? 0.1,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  })
-
-  const content = response.content[0]
-  if (content.type !== 'text') throw new Error('Unexpected response type')
-  let text = content.text
+  const adapter = getLLMAdapter(config)
+  let text = await adapter.call({ systemPrompt, userPrompt, config })
 
   text = text.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim()
 
@@ -345,6 +332,14 @@ export async function orchestrateLLMReasoning(
 ): Promise<ArchitectureGraph> {
   // Provider=none: use directory-based fallback immediately
   if (config.provider === 'none') {
+    return buildDirectoryFallback(graph)
+  }
+
+  if (
+    config.provider === 'claude-subscription' &&
+    !hasClaudeSubscriptionCredentialSource()
+  ) {
+    console.warn('[LLM] subscription mode selected but no Claude credentials were found; using directory fallback')
     return buildDirectoryFallback(graph)
   }
 
