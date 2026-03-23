@@ -1,7 +1,7 @@
 import type { ArchDiagramConfig } from './scripts/archdiagram/types.js'
 
 export default {
-  srcDir: 'src',
+  srcDir: 'scripts/archdiagram',
   tsConfigPath: 'tsconfig.json',
   exclude: ['node_modules', 'dist'],
   outputDir: 'docs/architecture',
