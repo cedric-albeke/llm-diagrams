@@ -89,6 +89,26 @@ ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
 
 This runs the full pipeline: static analysis, LLM reasoning via API, Mermaid generation, and canvas rendering.
 
+## OpenCode Usage (Outside Claude Code)
+
+When running from OpenCode tasks or terminal sessions, use one of these:
+
+```bash
+# deterministic, no auth
+npm run docs:diagram:static
+
+# API-key backed LLM reasoning
+ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
+
+# Claude subscription-backed local auth context (uses local Claude CLI login)
+npm run docs:diagram:subscription
+```
+
+Guidance:
+- Prefer `static` for CI/bot workflows.
+- Prefer `full` for reproducible headless LLM output.
+- Prefer `subscription` for local interactive sessions where Claude subscription auth is available (`claude login` completed).
+
 ## Static Mode (No API Key, No Canvas)
 
 For basic diagram generation without AI reasoning:
@@ -134,3 +154,5 @@ These tools are available when the Excalidraw canvas is running on port 3111:
 **Diagram too cluttered**: Raise the abstraction level. Merge related files into a single node. Aim for subsystems, not individual files.
 
 **Static analysis fails**: Make sure `tsconfig.json` exists and `src/` is the correct source directory. Pass `--src-dir` to override.
+
+**Subscription mode returns auth/API errors**: Ensure `claude login` has been completed and run `npm run docs:diagram:subscription` again. Subscription mode uses local Claude CLI auth context.

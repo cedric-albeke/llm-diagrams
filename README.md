@@ -36,6 +36,9 @@ npm install
 # Generate diagrams (no API key needed)
 npm run docs:diagram:static
 
+# Generate diagrams using Claude subscription auth (via local Claude environment)
+npm run docs:diagram:subscription
+
 # With LLM-enriched grouping
 ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
 
@@ -50,7 +53,7 @@ npx tsx scripts/generate-architecture-diagram.ts [options]
 
 Options:
   --help              Show help
-  --mode              static|full|auto (default: auto)
+  --mode              static|full|subscription|auto (default: auto)
   --src-dir           Source directory (default: src)
   --output-dir        Output directory (default: docs/architecture)
   --exclude           Comma-separated patterns to exclude
@@ -62,7 +65,45 @@ Options:
 
 - **`static`** — No API key required. Groups modules by directory structure. Fast and deterministic.
 - **`full`** — Requires `ANTHROPIC_API_KEY`. Uses LLM to create semantic module groupings with descriptions and relationship labels.
+- **`subscription`** — Uses your local Claude Code login (`claude -p`) as the reasoning backend (no API key). This avoids direct OAuth API calls and is best for local interactive usage.
 - **`auto`** (default) — Uses LLM if `ANTHROPIC_API_KEY` is set, otherwise falls back to static.
+
+### OpenCode usage (outside Claude Code)
+
+OpenCode can run all three modes directly from terminal/task runners:
+
+```bash
+# deterministic, no auth
+npm run docs:diagram:static
+
+# API-key backed
+ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
+
+# subscription-backed local auth context
+npm run docs:diagram:subscription
+```
+
+Recommended in OpenCode automation:
+- Use `static` in CI and bots.
+- Use `full` for repeatable headless LLM output.
+- Use `subscription` for local interactive workflows where Claude account auth is available (`claude login` done).
+
+### Subscription mode prerequisites
+
+`subscription` mode relies on the local Claude CLI session, not direct API-key auth.
+
+```bash
+claude login
+npm run docs:diagram:subscription
+```
+
+If Claude CLI is not authenticated, the pipeline automatically falls back to static grouping.
+
+Why this mode exists:
+- Direct OAuth token usage against the standard Messages API path can fail with authentication errors.
+- `subscription` mode avoids that path by delegating reasoning calls to your authenticated local `claude` CLI session.
+
+For complete auth setup and troubleshooting, see [`docs/AUTHENTICATION.md`](./docs/AUTHENTICATION.md).
 
 ## Configuration
 
