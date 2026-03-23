@@ -39,8 +39,17 @@ npm run docs:diagram:static
 # Generate diagrams using Claude subscription auth (via local Claude environment)
 npm run docs:diagram:subscription
 
-# With LLM-enriched grouping
+# With LLM-enriched grouping (Anthropic API key)
 ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
+
+# Via OpenAI
+OPENAI_API_KEY=sk-... npm run docs:diagram:openai
+
+# Via OpenRouter (access any model)
+OPENROUTER_API_KEY=sk-or-... npm run docs:diagram:openrouter
+
+# Via llmapi.ai
+LLMAPI_API_KEY=... npm run docs:diagram:llmapi
 
 # Point at a specific directory
 npx tsx scripts/generate-architecture-diagram.ts --mode static --src-dir src --output-dir docs/architecture
@@ -53,7 +62,7 @@ npx tsx scripts/generate-architecture-diagram.ts [options]
 
 Options:
   --help              Show help
-  --mode              static|full|subscription|auto (default: auto)
+  --mode              static|full|subscription|openai|openrouter|llmapi|auto (default: auto)
   --src-dir           Source directory (default: src)
   --output-dir        Output directory (default: docs/architecture)
   --exclude           Comma-separated patterns to exclude
@@ -66,26 +75,28 @@ Options:
 - **`static`** — No API key required. Groups modules by directory structure. Fast and deterministic.
 - **`full`** — Requires `ANTHROPIC_API_KEY`. Uses LLM to create semantic module groupings with descriptions and relationship labels.
 - **`subscription`** — Uses your local Claude Code login (`claude -p`) as the reasoning backend (no API key). This avoids direct OAuth API calls and is best for local interactive usage.
+- **`openai`** — Requires `OPENAI_API_KEY`. Uses OpenAI chat completions API (default model: `gpt-4o`).
+- **`openrouter`** — Requires `OPENROUTER_API_KEY`. Routes through [OpenRouter](https://openrouter.ai) to access any supported model (default: `anthropic/claude-sonnet-4-20250514`).
+- **`llmapi`** — Requires `LLMAPI_API_KEY`. Uses [llmapi.ai](https://llmapi.ai) gateway (default model: `gpt-4o`).
 - **`auto`** (default) — Uses LLM if `ANTHROPIC_API_KEY` is set, otherwise falls back to static.
 
 ### OpenCode usage (outside Claude Code)
 
-OpenCode can run all three modes directly from terminal/task runners:
+OpenCode can run all modes directly from terminal/task runners:
 
 ```bash
-# deterministic, no auth
-npm run docs:diagram:static
-
-# API-key backed
-ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full
-
-# subscription-backed local auth context
-npm run docs:diagram:subscription
+npm run docs:diagram:static                                      # no auth
+ANTHROPIC_API_KEY=sk-... npm run docs:diagram:full               # Anthropic API
+npm run docs:diagram:subscription                                # Claude login
+OPENAI_API_KEY=sk-... npm run docs:diagram:openai                # OpenAI
+OPENROUTER_API_KEY=sk-or-... npm run docs:diagram:openrouter     # OpenRouter
+LLMAPI_API_KEY=... npm run docs:diagram:llmapi                   # llmapi.ai
 ```
 
 Recommended in OpenCode automation:
 - Use `static` in CI and bots.
-- Use `full` for repeatable headless LLM output.
+- Use `full` or `openai` for repeatable headless LLM output.
+- Use `openrouter` for model flexibility (route to any provider).
 - Use `subscription` for local interactive workflows where Claude account auth is available (`claude login` done).
 
 ### Subscription mode prerequisites
@@ -144,8 +155,13 @@ scripts/archdiagram/
 ├── config.ts             # Config loading, CLI parsing, validation
 ├── phases/
 │   ├── analyze.ts        # dep-cruiser + ts-morph extraction
-│   ├── reason.ts         # LLM prompts, API adapter, 6-layer validation
-│   └── layout.ts         # ELK.js positioning
+│   ├── reason.ts         # LLM prompts, validation, orchestration
+│   ├── layout.ts         # ELK.js positioning
+│   └── llm/              # Provider adapters
+│       ├── anthropic-api-adapter.ts
+│       ├── claude-subscription-adapter.ts
+│       ├── openai-compatible-adapter.ts  # OpenAI, OpenRouter, llmapi.ai
+│       └── index.ts      # Adapter selector
 ├── renderers/
 │   ├── excalidraw.ts     # .excalidraw JSON generation
 │   ├── mermaid.ts        # Mermaid markdown generation
@@ -160,7 +176,7 @@ scripts/archdiagram/
 ## Testing
 
 ```bash
-npm test                    # Run all 145 tests
+npm test                    # Run all tests
 npx vitest run --reporter=verbose  # Verbose output
 ```
 

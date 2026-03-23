@@ -1,6 +1,6 @@
 # Authentication Modes
 
-`llm-diagrams` supports three authentication/LLM execution modes:
+`llm-diagrams` supports six LLM provider modes:
 
 ## 1) Static mode (no auth)
 
@@ -35,12 +35,46 @@ npm run docs:diagram:subscription
 - Does **not** require `ANTHROPIC_API_KEY`
 - Best for local developer workflows (OpenCode, terminal sessions)
 
+## 4) OpenAI mode
+
+```bash
+export OPENAI_API_KEY="sk-..."
+npm run docs:diagram:openai
+```
+
+- Uses OpenAI chat completions API (`/v1/chat/completions`)
+- Default model: `gpt-4o`
+- Override model: set `model` in `archdiagram.config.ts` or pass via config
+
+## 5) OpenRouter mode
+
+```bash
+export OPENROUTER_API_KEY="sk-or-..."
+npm run docs:diagram:openrouter
+```
+
+- Routes through [OpenRouter](https://openrouter.ai) to any supported model
+- Default model: `anthropic/claude-sonnet-4-20250514`
+- Sends `HTTP-Referer` and `X-Title` headers per OpenRouter requirements
+
+## 6) llmapi.ai mode
+
+```bash
+export LLMAPI_API_KEY="..."
+npm run docs:diagram:llmapi
+```
+
+- Uses [llmapi.ai](https://llmapi.ai) gateway (`/v1/chat/completions`)
+- Default model: `gpt-4o`
+- Docs: https://docs.llmapi.ai/
+
 ## OpenCode usage
 
 In OpenCode environments, choose mode by context:
 
 - CI/bot runs: `static`
-- Headless LLM runs: `full`
+- Headless LLM runs: `full`, `openai`, `openrouter`, or `llmapi`
+- Model flexibility: `openrouter` (route to any provider)
 - Local interactive with Claude subscription: `subscription`
 
 Example:
@@ -82,9 +116,15 @@ This mode delegates LLM reasoning through local `claude` CLI auth context instea
 
 ### Need guaranteed headless reliability
 
-Use API key mode:
+Use any API-key-backed mode:
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-api..."
 npm run docs:diagram:full
+
+export OPENAI_API_KEY="sk-..."
+npm run docs:diagram:openai
+
+export OPENROUTER_API_KEY="sk-or-..."
+npm run docs:diagram:openrouter
 ```
