@@ -1,14 +1,22 @@
 import React from 'react'
-import { Box, Text, useInput, useApp } from 'ink'
-import type { TuiScreen, TuiState } from './types.js'
+import { Box, Text, useApp, useInput } from 'ink'
 import { useScreen } from './hooks/useScreen.js'
+import { Welcome } from './screens/Welcome.js'
+import { ProviderSelect } from './screens/ProviderSelect.js'
+import { ConfigEditor } from './screens/ConfigEditor.js'
+import { FormatFilter } from './screens/FormatFilter.js'
+import { Confirm } from './screens/Confirm.js'
+import { Dashboard } from './screens/Dashboard.js'
+import { Results } from './screens/Results.js'
 
 export function App(): React.JSX.Element {
   const { exit } = useApp()
   const { screen, setScreen, tuiState, setTuiState } = useScreen()
 
-  useInput((input, key) => {
-    if ((input === 'q' || key.escape) && screen !== 'dashboard' && screen !== 'results') {
+  const screenProps = { state: tuiState, setState: setTuiState, setScreen }
+
+  useInput((input) => {
+    if (input === 'q' && screen !== 'dashboard') {
       exit()
     }
   })
@@ -20,33 +28,13 @@ export function App(): React.JSX.Element {
         <Text dimColor> — Architecture Diagram Generator</Text>
       </Box>
 
-      {screen === 'welcome' && (
-        <Text>Welcome — press Enter to start, q to quit</Text>
-      )}
-      {screen === 'provider' && (
-        <Text>Provider selection (coming soon)</Text>
-      )}
-      {screen === 'config' && (
-        <Text>Config editor (coming soon)</Text>
-      )}
-      {screen === 'formats' && (
-        <Text>Format selector (coming soon)</Text>
-      )}
-      {screen === 'confirm' && (
-        <Text>Confirm (coming soon)</Text>
-      )}
-      {screen === 'dashboard' && (
-        <Text>Dashboard (coming soon)</Text>
-      )}
-      {screen === 'results' && (
-        <Text>Results (coming soon)</Text>
-      )}
-
-      <Box marginTop={1}>
-        <Text dimColor>
-          {screen !== 'dashboard' && screen !== 'results' ? 'q: quit' : ''}
-        </Text>
-      </Box>
+      {screen === 'welcome' && <Welcome {...screenProps} />}
+      {screen === 'provider' && <ProviderSelect {...screenProps} />}
+      {screen === 'config' && <ConfigEditor {...screenProps} />}
+      {screen === 'formats' && <FormatFilter {...screenProps} />}
+      {screen === 'confirm' && <Confirm {...screenProps} />}
+      {screen === 'dashboard' && <Dashboard {...screenProps} />}
+      {screen === 'results' && <Results {...screenProps} />}
     </Box>
   )
 }
