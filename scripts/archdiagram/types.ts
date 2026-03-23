@@ -126,6 +126,17 @@ export interface RenderResult {
 }
 
 // ============================================
+// Pipeline Progress Types
+// ============================================
+
+export interface PipelineProgressEvent {
+  phase: 'analyze' | 'reason' | 'layout' | 'render';
+  status: 'start' | 'complete' | 'error';
+  message?: string;
+  duration?: number;
+}
+
+// ============================================
 // Pipeline Result Types
 // ============================================
 
