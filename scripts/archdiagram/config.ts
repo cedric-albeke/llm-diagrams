@@ -88,14 +88,17 @@ export function parseCliFlags(argv: string[]): Partial<ArchDiagramConfig> {
 
       case '--mode':
         if (next && !next.startsWith('--')) {
-          const provider = next === 'full'
-            ? 'anthropic'
-            : next === 'subscription'
-              ? 'claude-subscription'
-              : 'none'
+          const modeMap: Record<string, ArchDiagramConfig['llm']['provider']> = {
+            full: 'anthropic',
+            subscription: 'claude-subscription',
+            openai: 'openai',
+            openrouter: 'openrouter',
+            llmapi: 'llmapi',
+            static: 'none',
+          }
           result.llm = {
             ...result.llm,
-            provider,
+            provider: modeMap[next] ?? 'none',
           } as ArchDiagramConfig['llm']
           i++
         }

@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
 import path from 'path'
+import type { ArchDiagramConfig } from './archdiagram/types.js'
 import { loadConfigFile, parseCliFlags, mergeConfig, validateConfig } from './archdiagram/config.js'
 import { runPipeline } from './archdiagram/index.js'
 
@@ -11,7 +12,7 @@ Usage: npx tsx scripts/generate-architecture-diagram.ts [options]
 
 Options:
   --help              Show this help
-  --mode              static|full|subscription|auto (default: auto)
+  --mode              static|full|subscription|openai|openrouter|llmapi|auto (default: auto)
   --src-dir           Source directory (default: src)
   --output-dir        Output directory (default: docs/architecture)
   --exclude           Comma-separated patterns to exclude
@@ -45,13 +46,21 @@ async function main(): Promise<void> {
   const modeIdx = argv.indexOf('--mode')
   const modeArg = modeIdx !== -1 ? argv[modeIdx + 1] : undefined
 
-  if (modeArg === 'full') {
-    const apiKey = process.env.ANTHROPIC_API_KEY
+  const envKeyMap: Record<string, { envVar: string; provider: ArchDiagramConfig['llm']['provider'] }> = {
+    full: { envVar: 'ANTHROPIC_API_KEY', provider: 'anthropic' },
+    openai: { envVar: 'OPENAI_API_KEY', provider: 'openai' },
+    openrouter: { envVar: 'OPENROUTER_API_KEY', provider: 'openrouter' },
+    llmapi: { envVar: 'LLMAPI_API_KEY', provider: 'llmapi' },
+  }
+
+  if (modeArg && envKeyMap[modeArg]) {
+    const { envVar, provider } = envKeyMap[modeArg]
+    const apiKey = process.env[envVar]
     if (!apiKey) {
-      console.error('Error: --mode full requires ANTHROPIC_API_KEY env var')
+      console.error(`Error: --mode ${modeArg} requires ${envVar} env var`)
       process.exit(1)
     }
-    config = { ...config, llm: { ...config.llm, provider: 'anthropic', apiKey } }
+    config = { ...config, llm: { ...config.llm, provider, apiKey } }
   } else if (modeArg === 'subscription') {
     config = { ...config, llm: { ...config.llm, provider: 'claude-subscription' } }
   } else if (modeArg === 'static') {

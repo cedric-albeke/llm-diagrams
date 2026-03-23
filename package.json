@@ -8,7 +8,10 @@
     "docs:diagram": "tsx scripts/generate-architecture-diagram.ts",
     "docs:diagram:static": "tsx scripts/generate-architecture-diagram.ts --mode static",
     "docs:diagram:full": "tsx scripts/generate-architecture-diagram.ts --mode full",
-    "docs:diagram:subscription": "tsx scripts/generate-architecture-diagram.ts --mode subscription"
+    "docs:diagram:subscription": "tsx scripts/generate-architecture-diagram.ts --mode subscription",
+    "docs:diagram:openai": "tsx scripts/generate-architecture-diagram.ts --mode openai",
+    "docs:diagram:openrouter": "tsx scripts/generate-architecture-diagram.ts --mode openrouter",
+    "docs:diagram:llmapi": "tsx scripts/generate-architecture-diagram.ts --mode llmapi"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "latest",

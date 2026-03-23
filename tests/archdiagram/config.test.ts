@@ -24,6 +24,18 @@ describe('parseCliFlags', () => {
     const flags = parseCliFlags(['--mode', 'subscription'])
     expect(flags.llm?.provider).toBe('claude-subscription')
   })
+  it('parses --mode openai sets llm.provider to openai', () => {
+    const flags = parseCliFlags(['--mode', 'openai'])
+    expect(flags.llm?.provider).toBe('openai')
+  })
+  it('parses --mode openrouter sets llm.provider to openrouter', () => {
+    const flags = parseCliFlags(['--mode', 'openrouter'])
+    expect(flags.llm?.provider).toBe('openrouter')
+  })
+  it('parses --mode llmapi sets llm.provider to llmapi', () => {
+    const flags = parseCliFlags(['--mode', 'llmapi'])
+    expect(flags.llm?.provider).toBe('llmapi')
+  })
   it('parses --output-dir', () => {
     const flags = parseCliFlags(['--output-dir', 'out'])
     expect(flags.outputDir).toBe('out')

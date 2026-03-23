@@ -146,11 +146,12 @@ export interface PipelineResult {
 // Config Types
 // ============================================
 
-export type LLMProvider = 'anthropic' | 'claude-subscription' | 'none';
+export type LLMProvider = 'anthropic' | 'claude-subscription' | 'openai' | 'openrouter' | 'llmapi' | 'none';
 
 export interface LLMConfig {
   provider: LLMProvider;
   apiKey?: string;
+  baseUrl?: string;
   model?: string;
   temperature?: number;
 }

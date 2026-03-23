@@ -1,4 +1,4 @@
-import type { ArchDiagramConfig, PipelineResult, PhaseResult, RenderResult, ImportGraph, ArchitectureGraph, LayoutedDiagram } from './types.js'
+import type { ArchDiagramConfig, PipelineResult, PhaseResult, RenderResult, ImportGraph, ArchitectureGraph, LayoutedDiagram, LLMConfig } from './types.js'
 import { extractImportGraph, extractSymbolMap } from './phases/analyze.js'
 import { resolveBarrelExports } from './utils/barrel-resolver.js'
 import { buildUnifiedGraph } from './utils/graph-utils.js'
@@ -152,10 +152,18 @@ export async function runPipelineFromFlags(argv: string[]): Promise<PipelineResu
   if (argv.includes('--mode')) {
     const modeIdx = argv.indexOf('--mode')
     const modeValue = argv[modeIdx + 1]
-    if (modeValue === 'full') {
-      const apiKey = process.env.ANTHROPIC_API_KEY
+    const envKeyMap: Record<string, { envVar: string; provider: LLMConfig['provider'] }> = {
+      full: { envVar: 'ANTHROPIC_API_KEY', provider: 'anthropic' },
+      openai: { envVar: 'OPENAI_API_KEY', provider: 'openai' },
+      openrouter: { envVar: 'OPENROUTER_API_KEY', provider: 'openrouter' },
+      llmapi: { envVar: 'LLMAPI_API_KEY', provider: 'llmapi' },
+    }
+
+    if (modeValue && envKeyMap[modeValue]) {
+      const { envVar, provider } = envKeyMap[modeValue]
+      const apiKey = process.env[envVar]
       if (apiKey) {
-        config.llm = { ...config.llm, provider: 'anthropic', apiKey }
+        config.llm = { ...config.llm, provider, apiKey }
       }
     } else if (modeValue === 'subscription') {
       config.llm = { ...config.llm, provider: 'claude-subscription' }

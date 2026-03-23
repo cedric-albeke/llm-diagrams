@@ -332,3 +332,77 @@ describe('batchAnalyze — API mode', () => {
     expect(mockCreate).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('callLLM — OpenAI-compatible providers', () => {
+  const originalFetch = global.fetch
+
+  beforeEach(() => {
+    global.fetch = originalFetch
+  })
+
+  function mockOpenAIFetch(responseText: string) {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        choices: [{ message: { content: responseText } }],
+      }),
+    }) as unknown as typeof fetch
+  }
+
+  it('openai mode calls OpenAI API and parses response', async () => {
+    mockOpenAIFetch('{"value":"hello"}')
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'openai', apiKey: 'sk-test', model: 'gpt-4o' }
+    const result = await callLLM('sys', 'user', schema, config)
+    expect(result).toEqual({ value: 'hello' })
+  })
+
+  it('openrouter mode calls OpenRouter API and parses response', async () => {
+    mockOpenAIFetch('{"value":"world"}')
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'openrouter', apiKey: 'sk-or-test', model: 'anthropic/claude-sonnet-4-20250514' }
+    const result = await callLLM('sys', 'user', schema, config)
+    expect(result).toEqual({ value: 'world' })
+  })
+
+  it('llmapi mode calls llmapi.ai API and parses response', async () => {
+    mockOpenAIFetch('{"value":"llm"}')
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'llmapi', apiKey: 'llm-test-key', model: 'gpt-4o' }
+    const result = await callLLM('sys', 'user', schema, config)
+    expect(result).toEqual({ value: 'llm' })
+  })
+
+  it('openai mode throws when no API key is set', async () => {
+    delete process.env.OPENAI_API_KEY
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'openai' }
+    await expect(callLLM('sys', 'user', schema, config)).rejects.toThrow('OPENAI_API_KEY not set')
+  })
+
+  it('openrouter mode throws when no API key is set', async () => {
+    delete process.env.OPENROUTER_API_KEY
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'openrouter' }
+    await expect(callLLM('sys', 'user', schema, config)).rejects.toThrow('OPENROUTER_API_KEY not set')
+  })
+
+  it('llmapi mode throws when no API key is set', async () => {
+    delete process.env.LLMAPI_API_KEY
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'llmapi' }
+    await expect(callLLM('sys', 'user', schema, config)).rejects.toThrow('LLMAPI_API_KEY not set')
+  })
+
+  it('openai mode surfaces HTTP errors', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+      text: async () => 'Unauthorized',
+    }) as unknown as typeof fetch
+
+    const schema = z.object({ value: z.string() })
+    const config: LLMConfig = { provider: 'openai', apiKey: 'bad-key' }
+    await expect(callLLM('sys', 'user', schema, config)).rejects.toThrow('401')
+  })
+})
