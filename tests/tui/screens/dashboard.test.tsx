@@ -120,6 +120,61 @@ describe('Dashboard', () => {
     expect(frame).toBeTruthy()
   })
 
+  it('stores errorMessage in state when pipeline fails', async () => {
+    const { runPipeline } = await import('../../../scripts/archdiagram/index.js')
+    const mockRunPipeline = vi.mocked(runPipeline)
+    mockRunPipeline.mockRejectedValueOnce(new Error('something broke'))
+
+    const { Dashboard } = await import('../../../scripts/archdiagram/tui/screens/Dashboard.js')
+    const setState = vi.fn()
+    render(<Dashboard {...makeProps({ setState })} />)
+    await new Promise(r => setTimeout(r, 100))
+    expect(setState).toHaveBeenCalled()
+    const setterCalls = setState.mock.calls.map((call: unknown[]) => {
+      const updater = call[0] as (s: unknown) => unknown
+      return updater({ screen: 'dashboard', config: DEFAULT_CONFIG, selectedFormats: [] })
+    })
+    const errorCall = setterCalls.find((result: unknown) => (result as Record<string, unknown>).errorMessage !== undefined)
+    expect(errorCall).toBeDefined()
+  })
+
+  it('navigates to results on any key press after done', async () => {
+    vi.useFakeTimers()
+    const { Dashboard } = await import('../../../scripts/archdiagram/tui/screens/Dashboard.js')
+    const setScreen = vi.fn()
+    const { stdin } = render(<Dashboard {...makeProps({ setScreen })} />)
+    await vi.runAllTimersAsync()
+    stdin.write('a')
+    await vi.runAllTimersAsync()
+    expect(setScreen).toHaveBeenCalledWith('results')
+    vi.useRealTimers()
+  })
+
+  it('shows "Failed" header when pipeline errors', async () => {
+    const { runPipeline } = await import('../../../scripts/archdiagram/index.js')
+    const mockRunPipeline = vi.mocked(runPipeline)
+    mockRunPipeline.mockRejectedValueOnce(new Error('fatal error'))
+
+    const { Dashboard } = await import('../../../scripts/archdiagram/tui/screens/Dashboard.js')
+    const { lastFrame } = render(<Dashboard {...makeProps()} />)
+    await new Promise(r => setTimeout(r, 100))
+    expect(lastFrame()).toContain('Failed')
+  })
+
+  it('calls setScreen("results") after 1 second on pipeline failure', async () => {
+    vi.useFakeTimers()
+    const { runPipeline } = await import('../../../scripts/archdiagram/index.js')
+    const mockRunPipeline = vi.mocked(runPipeline)
+    mockRunPipeline.mockRejectedValueOnce(new Error('fatal'))
+
+    const { Dashboard } = await import('../../../scripts/archdiagram/tui/screens/Dashboard.js')
+    const setScreen = vi.fn()
+    render(<Dashboard {...makeProps({ setScreen })} />)
+    await vi.runAllTimersAsync()
+    expect(setScreen).toHaveBeenCalledWith('results')
+    vi.useRealTimers()
+  })
+
   it('updates phase status when onProgress is called with start event', async () => {
     const { runPipeline } = await import('../../../scripts/archdiagram/index.js')
     const mockRunPipeline = vi.mocked(runPipeline)

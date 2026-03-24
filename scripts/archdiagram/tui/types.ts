@@ -15,6 +15,7 @@ export interface TuiState {
   selectedFormats: OutputFormat[]
   pipelineResult?: PipelineResult
   errorMessage?: string
+  dryRun?: boolean
 }
 
 export interface ScreenProps {

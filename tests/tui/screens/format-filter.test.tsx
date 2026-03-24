@@ -62,9 +62,9 @@ describe('FormatFilter', () => {
     expect(checkmarks).toBe(2)
   })
 
-  it('shows canvas hint about port 3111', () => {
+  it('shows canvas hint about port 3444', () => {
     const { lastFrame } = render(<FormatFilter {...makeProps()} />)
-    expect(lastFrame()).toContain('port 3111')
+    expect(lastFrame()).toContain('port 3444')
   })
 
   it('shows svg hint about requiring mermaid', () => {

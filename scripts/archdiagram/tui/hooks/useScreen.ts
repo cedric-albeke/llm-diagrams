@@ -14,6 +14,7 @@ const INITIAL_STATE: TuiState = {
   screen: 'welcome',
   config: DEFAULT_CONFIG,
   selectedFormats: ['excalidraw', 'mermaid'],
+  dryRun: false,
 }
 
 export function useScreen(initialState?: Partial<TuiState>): UseScreenReturn {

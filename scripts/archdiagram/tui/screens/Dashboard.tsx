@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Text } from 'ink'
+import React, { useEffect, useRef, useState } from 'react'
+import { Box, Text, useApp, useInput } from 'ink'
 import { Spinner } from '@inkjs/ui'
 import type { ScreenProps } from '../types.js'
 import type { PipelineProgressEvent } from '../../types.js'
@@ -48,6 +48,7 @@ function PhaseRow({ name, phase }: { name: string; phase: PhaseState }): React.J
 }
 
 export function Dashboard({ state, setState, setScreen }: ScreenProps): React.JSX.Element {
+  const { exit } = useApp()
   const [phases, setPhases] = useState<Record<string, PhaseState>>({
     analyze: { status: 'waiting' },
     reason: { status: 'waiting' },
@@ -56,6 +57,11 @@ export function Dashboard({ state, setState, setScreen }: ScreenProps): React.JS
   })
   const [done, setDone] = useState(false)
   const [failed, setFailed] = useState(false)
+
+  const configRef = useRef(state.config)
+  const formatsRef = useRef(state.selectedFormats)
+  const setStateRef = useRef(setState)
+  const setScreenRef = useRef(setScreen)
 
   useEffect(() => {
     const handleProgress = (event: PipelineProgressEvent) => {
@@ -80,21 +86,32 @@ export function Dashboard({ state, setState, setScreen }: ScreenProps): React.JS
       })
     }
 
-    runPipeline(state.config, {
-      formats: state.selectedFormats,
+    runPipeline(configRef.current, {
+      formats: formatsRef.current,
       onProgress: handleProgress,
     })
       .then(result => {
-        setState(s => ({ ...s, pipelineResult: result }))
+        setStateRef.current(s => ({ ...s, pipelineResult: result }))
         setDone(true)
-        setTimeout(() => setScreen('results'), 1000)
+        setTimeout(() => setScreenRef.current('results'), 1000)
       })
       .catch(err => {
-        console.error(err)
+        const message = (err as Error)?.message ?? String(err)
+        setStateRef.current(s => ({ ...s, errorMessage: message }))
         setFailed(true)
         setDone(true)
+        setTimeout(() => setScreenRef.current('results'), 1000)
       })
   }, [])
+
+  useInput((input, key) => {
+    if (!done) return
+    if (input === 'q' || (key.ctrl && input === 'c')) {
+      exit()
+      return
+    }
+    setScreen('results')
+  })
 
   const allPhasesComplete = PHASES.every(
     p => phases[p]?.status === 'complete' || phases[p]?.status === 'error'
@@ -121,9 +138,36 @@ export function Dashboard({ state, setState, setScreen }: ScreenProps): React.JS
         ))}
       </Box>
 
+      {failed && state.errorMessage && (
+        <Box
+          flexDirection="column"
+          borderStyle="single"
+          borderColor="red"
+          paddingX={1}
+          marginBottom={1}
+        >
+          <Text bold color="red">Pipeline Error</Text>
+          <Text color="red">{state.errorMessage}</Text>
+        </Box>
+      )}
+
+      {failed && state.errorMessage && (
+        <Box
+          flexDirection="column"
+          borderStyle="single"
+          borderColor="red"
+          paddingX={1}
+          marginBottom={1}
+        >
+          <Text bold color="red">Pipeline Error</Text>
+          <Text color="red">{state.errorMessage}</Text>
+        </Box>
+      )}
+
       {done && (
-        <Box>
+        <Box flexDirection="column">
           <Text dimColor>Press any key to continue...</Text>
+          <Text dimColor>Press q to quit</Text>
         </Box>
       )}
     </Box>

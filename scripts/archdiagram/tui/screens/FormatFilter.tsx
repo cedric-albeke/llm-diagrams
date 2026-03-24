@@ -14,7 +14,7 @@ const FORMAT_OPTIONS: FormatOption[] = [
   { value: 'mermaid', label: 'mermaid' },
   { value: 'svg', label: 'svg', hint: '(requires mermaid — auto-included if needed)' },
   { value: 'png', label: 'png', hint: '(requires mermaid — auto-included if needed)' },
-  { value: 'canvas', label: 'canvas', hint: '(requires canvas on port 3111)' },
+  { value: 'canvas', label: 'canvas', hint: '(requires canvas on port 3444)' },
 ]
 
 export function FormatFilter({ state, setState, setScreen }: ScreenProps): React.JSX.Element {

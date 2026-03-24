@@ -181,6 +181,43 @@ describe('Results', () => {
     expect(configModule.saveConfig).toHaveBeenCalledTimes(1)
   })
 
+  it('shows save error message when saveConfig throws', async () => {
+    const { Results } = await import('../../../scripts/archdiagram/tui/screens/Results.js')
+    const configModule = await import('../../../scripts/archdiagram/config-serializer.js')
+    vi.mocked(configModule.saveConfig).mockImplementationOnce(() => {
+      throw new Error('disk full')
+    })
+    const { lastFrame, stdin } = render(<Results {...makeProps()} />)
+    stdin.write('y')
+    await new Promise(r => setTimeout(r, 50))
+    expect(lastFrame()).toContain('Save failed')
+    expect(lastFrame()).toContain('disk full')
+  })
+
+  it('shows errorMessage from state in header when present', async () => {
+    const { Results } = await import('../../../scripts/archdiagram/tui/screens/Results.js')
+    const { lastFrame } = render(
+      <Results
+        {...makeProps({
+          state: {
+            screen: 'results',
+            config: DEFAULT_CONFIG,
+            selectedFormats: [],
+            pipelineResult: mockResultWithError,
+            errorMessage: 'critical pipeline error',
+          },
+        })}
+      />
+    )
+    expect(lastFrame()).toContain('critical pipeline error')
+  })
+
+  it('shows bold Press q to exit prompt', async () => {
+    const { Results } = await import('../../../scripts/archdiagram/tui/screens/Results.js')
+    const { lastFrame } = render(<Results {...makeProps()} />)
+    expect(lastFrame()).toContain('Press q to exit')
+  })
+
   it('does not show mermaid preview when no mermaid output exists', async () => {
     const { Results } = await import('../../../scripts/archdiagram/tui/screens/Results.js')
     const resultWithoutMermaid: PipelineResult = {

@@ -1,10 +1,18 @@
 import React from 'react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render } from 'ink-testing-library'
 import { ConfigEditor } from '../../../scripts/archdiagram/tui/screens/ConfigEditor.js'
 import type { ScreenProps } from '../../../scripts/archdiagram/tui/types.js'
 import { DEFAULT_CONFIG } from '../../../scripts/archdiagram/config.js'
 import type { ArchDiagramConfig } from '../../../scripts/archdiagram/types.js'
+
+vi.mock('../../../scripts/archdiagram/config.js', async (importOriginal) => {
+  const original = await importOriginal<typeof import('../../../scripts/archdiagram/config.js')>()
+  return {
+    ...original,
+    validateConfig: vi.fn().mockReturnValue({ valid: true, errors: [] }),
+  }
+})
 
 function makeProps(overrides?: Partial<ScreenProps>): ScreenProps {
   return {
@@ -30,6 +38,10 @@ function makePropsWithProvider(provider: ArchDiagramConfig['llm']['provider']): 
 }
 
 describe('ConfigEditor', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the Configure Diagram title', () => {
     const { lastFrame } = render(<ConfigEditor {...makeProps()} />)
     expect(lastFrame()).toContain('Configure Diagram')
@@ -165,5 +177,81 @@ describe('ConfigEditor', () => {
     const frameAfter = lastFrame() ?? ''
     expect(frameAfter).toBeDefined()
     expect(frameBefore).not.toBe(frameAfter)
+  })
+
+  it('shows no-exclusions warning when exclude is empty', () => {
+    const { lastFrame } = render(
+      <ConfigEditor
+        {...makeProps({
+          state: {
+            screen: 'config',
+            config: { ...DEFAULT_CONFIG, exclude: [] },
+            selectedFormats: ['excalidraw'],
+          },
+        })}
+      />
+    )
+    expect(lastFrame()).toContain('node_modules will be scanned')
+  })
+
+  it('does not show no-exclusions warning when exclude has values', () => {
+    const { lastFrame } = render(<ConfigEditor {...makeProps()} />)
+    expect(lastFrame()).not.toContain('node_modules will be scanned')
+  })
+
+  it('shows srcDir empty warning when srcDir is empty string', () => {
+    const { lastFrame } = render(
+      <ConfigEditor
+        {...makeProps({
+          state: {
+            screen: 'config',
+            config: { ...DEFAULT_CONFIG, srcDir: '' },
+            selectedFormats: ['excalidraw'],
+          },
+        })}
+      />
+    )
+    expect(lastFrame()).toContain('Source directory is empty')
+  })
+
+  it('shows tsConfigPath empty warning when tsConfigPath is empty', () => {
+    const { lastFrame } = render(
+      <ConfigEditor
+        {...makeProps({
+          state: {
+            screen: 'config',
+            config: { ...DEFAULT_CONFIG, tsConfigPath: '' },
+            selectedFormats: ['excalidraw'],
+          },
+        })}
+      />
+    )
+    expect(lastFrame()).toContain('tsconfig path is empty')
+  })
+
+  it('blocks navigation to formats when Next focused with path errors', async () => {
+    const { validateConfig } = await import('../../../scripts/archdiagram/config.js')
+    vi.mocked(validateConfig).mockReturnValueOnce({ valid: false, errors: ['srcDir does not exist: bad-dir'] })
+
+    const setScreen = vi.fn()
+    const { stdin } = render(
+      <ConfigEditor
+        {...makeProps({
+          setScreen,
+          state: {
+            screen: 'config',
+            config: { ...DEFAULT_CONFIG, srcDir: 'bad-dir' },
+            selectedFormats: ['excalidraw'],
+          },
+        })}
+      />
+    )
+    for (let i = 0; i < 8; i++) {
+      stdin.write('\x1B[B')
+      await new Promise(r => setTimeout(r, 20))
+    }
+    stdin.write('\r')
+    await new Promise(r => setTimeout(r, 50))
+    expect(setScreen).not.toHaveBeenCalledWith('formats')
   })
 })

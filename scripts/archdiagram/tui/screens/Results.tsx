@@ -6,7 +6,8 @@ import { saveConfig } from '../../config-serializer.js'
 
 export function Results({ state }: ScreenProps): React.JSX.Element {
   const [saved, setSaved] = useState(false)
-  const { pipelineResult } = state
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const { pipelineResult, errorMessage } = state
 
   const anyError = pipelineResult?.phases.some(p => !p.success) ?? false
 
@@ -23,8 +24,12 @@ export function Results({ state }: ScreenProps): React.JSX.Element {
 
   useInput((input) => {
     if (input === 'y' && !saved) {
-      saveConfig(state.config, 'archdiagram.config.ts')
-      setSaved(true)
+      try {
+        saveConfig(state.config, 'archdiagram.config.ts')
+        setSaved(true)
+      } catch (err) {
+        setSaveError((err as Error)?.message ?? 'Failed to save config')
+      }
     }
   })
 
@@ -33,11 +38,14 @@ export function Results({ state }: ScreenProps): React.JSX.Element {
 
   return (
     <Box flexDirection="column" paddingX={2} paddingY={1}>
-      <Box marginBottom={1}>
+      <Box marginBottom={1} flexDirection="column">
         {anyError ? (
           <Text bold color="red">Generation Failed ✗</Text>
         ) : (
           <Text bold color="green">Generation Complete ✓</Text>
+        )}
+        {errorMessage && (
+          <Text color="red">{errorMessage}</Text>
         )}
       </Box>
 
@@ -78,12 +86,14 @@ export function Results({ state }: ScreenProps): React.JSX.Element {
       <Box flexDirection="column" marginBottom={1}>
         {saved ? (
           <Text color="green">Saved ✓</Text>
+        ) : saveError ? (
+          <Text color="red">⚠ Save failed: {saveError}</Text>
         ) : (
           <Text dimColor>Save these settings to archdiagram.config.ts? (y/n)</Text>
         )}
       </Box>
 
-      <Text dimColor>Press q to exit</Text>
+      <Text bold>Press q to exit</Text>
     </Box>
   )
 }

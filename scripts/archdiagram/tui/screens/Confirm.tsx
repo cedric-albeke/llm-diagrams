@@ -12,10 +12,14 @@ const PROVIDER_LABELS: Record<LLMProvider, string> = {
   llmapi: 'llmapi.ai',
 }
 
-export function Confirm({ state, setScreen }: ScreenProps): React.JSX.Element {
-  useInput((_input, key) => {
+export function Confirm({ state, setState, setScreen }: ScreenProps): React.JSX.Element {
+  useInput((input, key) => {
     if (key.escape) {
       setScreen('config')
+      return
+    }
+    if (input === ' ') {
+      setState(s => ({ ...s, dryRun: !s.dryRun }))
       return
     }
     if (key.return) {
@@ -23,7 +27,7 @@ export function Confirm({ state, setScreen }: ScreenProps): React.JSX.Element {
     }
   })
 
-  const { config, selectedFormats } = state
+  const { config, selectedFormats, dryRun = false } = state
   const providerLabel = PROVIDER_LABELS[config.llm.provider] ?? config.llm.provider
 
   const rows = [
@@ -31,7 +35,7 @@ export function Confirm({ state, setScreen }: ScreenProps): React.JSX.Element {
     { label: 'Output Dir', value: config.outputDir },
     { label: 'LLM Provider', value: providerLabel },
     { label: 'Selected Formats', value: selectedFormats.join(', ') },
-    { label: 'Dry Run', value: 'No' },
+    { label: 'Dry Run', value: dryRun ? 'Yes' : 'No' },
   ]
 
   return (
@@ -47,13 +51,14 @@ export function Confirm({ state, setScreen }: ScreenProps): React.JSX.Element {
               <Text dimColor>{row.label}</Text>
             </Box>
             <Text dimColor>: </Text>
-            <Text color="white">{row.value}</Text>
+            <Text color={row.label === 'Dry Run' && dryRun ? 'yellow' : 'white'}>{row.value}</Text>
           </Box>
         ))}
       </Box>
 
       <Box flexDirection="column">
         <Text color="green" bold>Press Enter to run</Text>
+        <Text dimColor>Press Space to toggle dry run</Text>
         <Text dimColor>Press Escape to go back (config)</Text>
       </Box>
     </Box>

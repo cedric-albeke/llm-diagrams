@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Text, useInput } from 'ink'
 import type { ScreenProps } from '../types.js'
 import type { ArchDiagramConfig, LLMProvider } from '../../types.js'
@@ -91,6 +91,16 @@ export function ConfigEditor({ state, setState, setScreen }: ScreenProps): React
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [pathErrors, setPathErrors] = useState<string[]>([])
 
+  const initialConfig = state.config
+  useEffect(() => {
+    try {
+      const { errors } = validateConfig(initialConfig)
+      setPathErrors(errors)
+    } catch (_e) {
+      void _e
+    }
+  }, [initialConfig])
+
   useInput((input, key) => {
     if (editingIndex !== null) {
       if (key.escape) {
@@ -151,6 +161,9 @@ export function ConfigEditor({ state, setState, setScreen }: ScreenProps): React
 
       if (key.return) {
         if (focusedIndex === totalItems - 1) {
+          if (pathErrors.length > 0) {
+            return
+          }
           setScreen('formats')
           return
         }
@@ -231,19 +244,26 @@ export function ConfigEditor({ state, setState, setScreen }: ScreenProps): React
           )
         })}
 
-        <Box marginTop={1}>
-          <Text
-            color={focusedIndex === totalItems - 1 ? 'green' : 'gray'}
-            bold={focusedIndex === totalItems - 1}
-          >
-            {focusedIndex === totalItems - 1 ? '❯ ' : '  '}
-          </Text>
-          <Text
-            color={focusedIndex === totalItems - 1 ? 'green' : 'gray'}
-            bold={focusedIndex === totalItems - 1}
-          >
-            → Next (Enter when done)
-          </Text>
+        <Box marginTop={1} flexDirection="column">
+          <Box>
+            <Text
+              color={focusedIndex === totalItems - 1 ? (pathErrors.length > 0 ? 'red' : 'green') : 'gray'}
+              bold={focusedIndex === totalItems - 1}
+            >
+              {focusedIndex === totalItems - 1 ? '❯ ' : '  '}
+            </Text>
+            <Text
+              color={focusedIndex === totalItems - 1 ? (pathErrors.length > 0 ? 'red' : 'green') : 'gray'}
+              bold={focusedIndex === totalItems - 1}
+            >
+              → Next (Enter when done)
+            </Text>
+          </Box>
+          {focusedIndex === totalItems - 1 && pathErrors.length > 0 && (
+            <Box paddingLeft={4}>
+              <Text color="red">Fix errors above before continuing</Text>
+            </Box>
+          )}
         </Box>
       </Box>
 
@@ -252,6 +272,24 @@ export function ConfigEditor({ state, setState, setScreen }: ScreenProps): React
           {pathErrors.map(err => (
             <Text key={err} color="yellow">⚠ {err}</Text>
           ))}
+        </Box>
+      )}
+
+      {state.config.exclude.length === 0 && (
+        <Box marginBottom={1}>
+          <Text color="yellow">⚠ No exclusions — node_modules will be scanned (slow)</Text>
+        </Box>
+      )}
+
+      {!state.config.srcDir && (
+        <Box marginBottom={1}>
+          <Text color="yellow">⚠ Source directory is empty</Text>
+        </Box>
+      )}
+
+      {!state.config.tsConfigPath && (
+        <Box marginBottom={1}>
+          <Text color="yellow">⚠ tsconfig path is empty</Text>
         </Box>
       )}
 

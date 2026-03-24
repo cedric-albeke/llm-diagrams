@@ -41,7 +41,10 @@ export async function runPipeline(
       const resolved = resolveBarrelExports(importGraph)
       const symbolNodes = await extractSymbolMap(analysisConfig)
       unifiedGraph = buildUnifiedGraph(resolved, symbolNodes)
-      phases.push({ phase: 'analyze', success: true, duration: Date.now() - t0 })
+      if (unifiedGraph.modules.length === 0) {
+        console.warn('[pipeline] No modules found — check srcDir and exclude patterns')
+      }
+      phases.push({ phase: 'analyze', success: true, duration: Date.now() - t0, ...(unifiedGraph.modules.length === 0 ? { error: 'No modules found — check srcDir and exclude patterns' } : {}) })
       onProgress?.({ phase: 'analyze', status: 'complete', duration: Date.now() - t0 })
     } catch (e) {
       const duration = Date.now() - t0

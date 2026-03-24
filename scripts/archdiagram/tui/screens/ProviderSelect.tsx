@@ -68,8 +68,8 @@ export function ProviderSelect({ setState, setScreen }: ScreenProps): React.JSX.
                 {p.label}
               </Text>
               {p.envVar && (
-                <Text color={envOk ? 'green' : 'gray'}>
-                  {envOk ? '  ✓' : ''}
+                <Text color={envOk ? 'green' : 'red'}>
+                  {envOk ? '  ✓' : '  ✗'}
                 </Text>
               )}
             </Box>
