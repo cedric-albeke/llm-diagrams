@@ -11,7 +11,7 @@ Use this skill when the user asks to:
 
 ## Prerequisites
 
-1. Excalidraw canvas must be running on port 3111:
+1. Excalidraw canvas must be running on port 3444:
    ```bash
    ~/.local/share/mcp-servers/start-excalidraw-canvas.sh
    ```
@@ -70,7 +70,7 @@ Keep it readable: 5-15 nodes is usually the right level of abstraction. Don't ma
 
 ### Step 4: Render to Canvas via MCP
 
-Use the `create_from_mermaid` MCP tool with your Mermaid diagram string. The canvas must be running on port 3111 for this to work.
+Use the `create_from_mermaid` MCP tool with your Mermaid diagram string. The canvas must be running on port 3444 for this to work.
 
 ### Step 5: Verify and Export
 
@@ -134,7 +134,7 @@ Edit `archdiagram.config.ts` at the project root to customize behavior:
 
 ## MCP Tools Reference
 
-These tools are available when the Excalidraw canvas is running on port 3111:
+These tools are available when the Excalidraw canvas is running on port 3444:
 
 | Tool | Purpose |
 |------|---------|
@@ -147,7 +147,7 @@ These tools are available when the Excalidraw canvas is running on port 3111:
 
 ## Troubleshooting
 
-**Canvas not responding**: Make sure the canvas is running. Check with `curl http://localhost:3111` or restart with `~/.local/share/mcp-servers/start-excalidraw-canvas.sh`.
+**Canvas not responding**: Make sure the canvas is running. Check with `curl http://localhost:3444` or restart with `~/.local/share/mcp-servers/start-excalidraw-canvas.sh`.
 
 **Mermaid parse error**: Validate your Mermaid syntax at https://mermaid.live before passing to `create_from_mermaid`.
 

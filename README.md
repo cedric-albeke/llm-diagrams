@@ -24,7 +24,7 @@ Source Code ──> Static Analysis ──> LLM Reasoning ──> ELK Layout ─
 |--------|------|-------------|
 | Excalidraw | `system-overview.excalidraw` | Opens in [excalidraw.com](https://excalidraw.com), editable vector diagram |
 | Mermaid | `system-overview.md` | Renders in GitHub/GitLab markdown preview |
-| Canvas | Live render | Pushes to Excalidraw MCP canvas (port 3111) |
+| Canvas | Live render | Pushes to Excalidraw MCP canvas (port 3444) |
 | SVG/PNG | `system-overview.svg/.png` | Via mermaid-cli or canvas export |
 
 ## Quick start

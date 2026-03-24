@@ -1061,7 +1061,7 @@
       "id": "root_to_phases",
       "type": "arrow",
       "x": 1061,
-      "y": 52,
+      "y": 42,
       "width": 280,
       "height": 112.66666666666666,
       "points": [
@@ -1070,11 +1070,11 @@
           0
         ],
         [
-          -30,
+          -290,
           0
         ],
         [
-          -30,
+          -290,
           112.66666666666666
         ],
         [
@@ -1091,29 +1091,12 @@
       "roughness": 0
     },
     {
-      "id": "root_to_phases_bg",
-      "type": "rectangle",
-      "x": 1039,
-      "y": 96.33333333333333,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "root_to_phases_label",
       "type": "text",
-      "x": 1039,
-      "y": 96.33333333333333,
+      "x": 976,
+      "y": 26,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "3 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1123,7 +1106,7 @@
     {
       "id": "root_to_renderers",
       "type": "arrow",
-      "x": 1101,
+      "x": 1091,
       "y": 322,
       "width": 487.66666666666663,
       "height": 472.66666666666663,
@@ -1134,11 +1117,11 @@
         ],
         [
           0,
-          30
+          116.33333333333331
         ],
         [
           -487.66666666666663,
-          30
+          116.33333333333331
         ],
         [
           -487.66666666666663,
@@ -1154,29 +1137,12 @@
       "roughness": 0
     },
     {
-      "id": "root_to_renderers_bg",
-      "type": "rectangle",
-      "x": 817.6666666666667,
-      "y": 332,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "root_to_renderers_label",
       "type": "text",
-      "x": 817.6666666666667,
-      "y": 332,
+      "x": 1097,
+      "y": 326,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "4 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1187,7 +1153,7 @@
       "id": "root_to_utils",
       "type": "arrow",
       "x": 1274,
-      "y": 52,
+      "y": 42,
       "width": 280,
       "height": 55.83333333333333,
       "points": [
@@ -1196,11 +1162,11 @@
           0
         ],
         [
-          30,
+          50,
           0
         ],
         [
-          30,
+          50,
           55.83333333333333
         ],
         [
@@ -1217,29 +1183,12 @@
       "roughness": 0
     },
     {
-      "id": "root_to_utils_bg",
-      "type": "rectangle",
-      "x": 1312,
-      "y": 67.91666666666666,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "root_to_utils_label",
       "type": "text",
-      "x": 1312,
-      "y": 67.91666666666666,
+      "x": 1280,
+      "y": 26,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "2 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1250,25 +1199,25 @@
       "id": "phases_to_root",
       "type": "arrow",
       "x": 781,
-      "y": 694.6666666666666,
+      "y": 704.6666666666666,
       "width": 280,
-      "height": 527.6666666666666,
+      "height": 537.6666666666666,
       "points": [
         [
           0,
           0
         ],
         [
-          55,
+          80,
           0
         ],
         [
-          55,
-          -527.6666666666666
+          80,
+          -537.6666666666666
         ],
         [
           280,
-          -527.6666666666666
+          -537.6666666666666
         ]
       ],
       "startBinding": null,
@@ -1280,29 +1229,12 @@
       "roughness": 0
     },
     {
-      "id": "phases_to_root_bg",
-      "type": "rectangle",
-      "x": 844,
-      "y": 418.8333333333333,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "phases_to_root_label",
       "type": "text",
-      "x": 844,
-      "y": 418.8333333333333,
+      "x": 787,
+      "y": 688.6666666666666,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "5 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1312,7 +1244,7 @@
     {
       "id": "renderers_to_root",
       "type": "arrow",
-      "x": 693.3333333333334,
+      "x": 703.3333333333334,
       "y": 794.6666666666666,
       "width": 540.6666666666666,
       "height": 472.66666666666663,
@@ -1323,11 +1255,11 @@
         ],
         [
           0,
-          -55
+          -266.3333333333333
         ],
         [
           540.6666666666666,
-          -55
+          -266.3333333333333
         ],
         [
           540.6666666666666,
@@ -1343,29 +1275,12 @@
       "roughness": 0
     },
     {
-      "id": "renderers_to_root_bg",
-      "type": "rectangle",
-      "x": 924.1666666666667,
-      "y": 719.6666666666666,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "renderers_to_root_label",
       "type": "text",
-      "x": 924.1666666666667,
-      "y": 719.6666666666666,
+      "x": 709.3333333333334,
+      "y": 774.6666666666666,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "4 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1378,23 +1293,23 @@
       "x": 1554,
       "y": 162.83333333333331,
       "width": 280,
-      "height": 119.16666666666669,
+      "height": 129.16666666666669,
       "points": [
         [
           0,
           0
         ],
         [
-          -55,
+          -140,
           0
         ],
         [
-          -55,
-          119.16666666666669
+          -140,
+          129.16666666666669
         ],
         [
           -280,
-          119.16666666666669
+          129.16666666666669
         ]
       ],
       "startBinding": null,
@@ -1406,29 +1321,12 @@
       "roughness": 0
     },
     {
-      "id": "utils_to_root_bg",
-      "type": "rectangle",
-      "x": 1507,
-      "y": 210.41666666666666,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "utils_to_root_label",
       "type": "text",
-      "x": 1507,
-      "y": 210.41666666666666,
+      "x": 1469,
+      "y": 146.83333333333331,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "2 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1439,25 +1337,25 @@
       "id": "tui_to_root",
       "type": "arrow",
       "x": 198,
-      "y": 177.66666666666666,
+      "y": 167.66666666666666,
       "width": 863,
-      "height": 104.33333333333334,
+      "height": 124.33333333333334,
       "points": [
         [
           0,
           0
         ],
         [
-          30,
+          461.5,
           0
         ],
         [
-          30,
-          104.33333333333334
+          461.5,
+          124.33333333333334
         ],
         [
           863,
-          104.33333333333334
+          124.33333333333334
         ]
       ],
       "startBinding": null,
@@ -1469,29 +1367,12 @@
       "roughness": 0
     },
     {
-      "id": "tui_to_root_bg",
-      "type": "rectangle",
-      "x": 236,
-      "y": 217.83333333333331,
-      "width": 86,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "tui_to_root_label",
       "type": "text",
-      "x": 236,
-      "y": 217.83333333333331,
+      "x": 204,
+      "y": 151.66666666666666,
       "width": 86,
-      "height": 22,
+      "height": 20,
       "text": "11 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1502,25 +1383,25 @@
       "id": "tui_to_phases",
       "type": "arrow",
       "x": 198,
-      "y": 394.33333333333326,
+      "y": 391,
       "width": 280,
-      "height": 35.33333333333337,
+      "height": 236.33333333333334,
       "points": [
         [
           0,
           0
         ],
         [
-          30,
+          200,
           0
         ],
         [
-          30,
-          35.33333333333337
+          200,
+          -236.33333333333334
         ],
         [
           280,
-          35.33333333333337
+          -236.33333333333334
         ]
       ],
       "startBinding": null,
@@ -1532,29 +1413,12 @@
       "roughness": 0
     },
     {
-      "id": "tui_to_phases_bg",
-      "type": "rectangle",
-      "x": 236,
-      "y": 399.99999999999994,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "tui_to_phases_label",
       "type": "text",
-      "x": 236,
-      "y": 399.99999999999994,
+      "x": 204,
+      "y": 375,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "3 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1565,25 +1429,25 @@
       "id": "tui_to_renderers",
       "type": "arrow",
       "x": 198,
-      "y": 611,
+      "y": 614.3333333333334,
       "width": 375.33333333333337,
-      "height": 338.66666666666663,
+      "height": 210.33333333333326,
       "points": [
         [
           0,
           0
         ],
         [
-          30,
+          277.6666666666667,
           0
         ],
         [
-          30,
-          338.66666666666663
+          277.6666666666667,
+          210.33333333333326
         ],
         [
           375.33333333333337,
-          338.66666666666663
+          210.33333333333326
         ]
       ],
       "startBinding": null,
@@ -1595,29 +1459,12 @@
       "roughness": 0
     },
     {
-      "id": "tui_to_renderers_bg",
-      "type": "rectangle",
-      "x": 236,
-      "y": 768.3333333333333,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "tui_to_renderers_label",
       "type": "text",
-      "x": 236,
-      "y": 768.3333333333333,
+      "x": 204,
+      "y": 598.3333333333334,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "4 imports",
       "fontSize": 11,
       "fontFamily": 2,
@@ -1628,7 +1475,7 @@
       "id": "tui_to_utils",
       "type": "arrow",
       "x": 198,
-      "y": 827.6666666666666,
+      "y": 837.6666666666666,
       "width": 1356,
       "height": 609.8333333333333,
       "points": [
@@ -1637,11 +1484,11 @@
           0
         ],
         [
-          30,
+          798,
           0
         ],
         [
-          30,
+          798,
           -609.8333333333333
         ],
         [
@@ -1658,29 +1505,12 @@
       "roughness": 0
     },
     {
-      "id": "tui_to_utils_bg",
-      "type": "rectangle",
-      "x": 236,
-      "y": 510.75,
-      "width": 79,
-      "height": 22,
-      "strokeColor": "transparent",
-      "backgroundColor": "#ffffff",
-      "opacity": 95,
-      "strokeWidth": 0,
-      "roughness": 0,
-      "fillStyle": "solid",
-      "roundness": {
-        "type": 3
-      }
-    },
-    {
       "id": "tui_to_utils_label",
       "type": "text",
-      "x": 236,
-      "y": 510.75,
+      "x": 204,
+      "y": 821.6666666666666,
       "width": 79,
-      "height": 22,
+      "height": 20,
       "text": "2 imports",
       "fontSize": 11,
       "fontFamily": 2,
