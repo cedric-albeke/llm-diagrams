@@ -67,12 +67,20 @@ interface ExcalidrawScene {
   appState: { gridSize: number; viewBackgroundColor: string }
 }
 
-interface RoleColor {
+interface NodeColor {
   fill: string
   stroke: string
 }
 
-const ROLE_COLORS: Record<string, RoleColor> = {
+interface Positioned {
+  id: string
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+const ROLE_COLORS: Record<string, NodeColor> = {
   frontend: { fill: '#a5d8ff', stroke: '#1971c2' },
   backend: { fill: '#eebefa', stroke: '#862e9c' },
   shared: { fill: '#e9ecef', stroke: '#495057' },
@@ -80,9 +88,38 @@ const ROLE_COLORS: Record<string, RoleColor> = {
   data: { fill: '#99e9f2', stroke: '#0c8599' },
 }
 
-const DEFAULT_COLORS: RoleColor = ROLE_COLORS.shared
+const GROUP_COLORS: NodeColor[] = [
+  { fill: '#a5d8ff', stroke: '#1971c2' },
+  { fill: '#eebefa', stroke: '#862e9c' },
+  { fill: '#b2f2bb', stroke: '#2b8a3e' },
+  { fill: '#ffd8a8', stroke: '#e67700' },
+  { fill: '#99e9f2', stroke: '#0c8599' },
+  { fill: '#ffc9c9', stroke: '#c92a2a' },
+  { fill: '#e9ecef', stroke: '#495057' },
+]
 
-function buildZoneRect(zone: LayoutZone): ExcalidrawRectangle {
+const DEFAULT_COLORS: NodeColor = { fill: '#e9ecef', stroke: '#495057' }
+
+function getNodeColors(node: LayoutNode, zones: LayoutZone[]): NodeColor {
+  if (node.group && node.group in ROLE_COLORS) {
+    return ROLE_COLORS[node.group]
+  }
+  const zoneIndex = zones.findIndex(z => z.label === node.group)
+  if (zoneIndex >= 0) {
+    return GROUP_COLORS[zoneIndex % GROUP_COLORS.length]
+  }
+  return DEFAULT_COLORS
+}
+
+function findPositioned(id: string, nodes: LayoutNode[], zones: LayoutZone[]): Positioned | undefined {
+  const node = nodes.find(n => n.id === id)
+  if (node) return node
+  const zone = zones.find(z => `zone_${z.id}` === id)
+  if (zone) return { id, x: zone.x, y: zone.y, width: zone.width, height: zone.height }
+  return undefined
+}
+
+function buildZoneRect(zone: LayoutZone, colors: NodeColor): ExcalidrawRectangle {
   return {
     id: `zone_${zone.id}`,
     type: 'rectangle',
@@ -90,9 +127,9 @@ function buildZoneRect(zone: LayoutZone): ExcalidrawRectangle {
     y: zone.y,
     width: zone.width,
     height: zone.height,
-    strokeColor: zone.color,
-    backgroundColor: zone.color,
-    opacity: 10,
+    strokeColor: colors.stroke,
+    backgroundColor: colors.fill,
+    opacity: 20,
     strokeWidth: 1,
     roughness: 0,
     fillStyle: 'solid',
@@ -114,8 +151,7 @@ function buildZoneLabel(zone: LayoutZone): ExcalidrawText {
   }
 }
 
-function buildNodeRect(node: LayoutNode): ExcalidrawRectangle {
-  const roleColors = ROLE_COLORS[node.group ?? 'shared'] ?? DEFAULT_COLORS
+function buildNodeRect(node: LayoutNode, colors: NodeColor): ExcalidrawRectangle {
   return {
     id: node.id,
     type: 'rectangle',
@@ -123,8 +159,8 @@ function buildNodeRect(node: LayoutNode): ExcalidrawRectangle {
     y: node.y,
     width: node.width,
     height: node.height,
-    strokeColor: roleColors.stroke,
-    backgroundColor: roleColors.fill,
+    strokeColor: colors.stroke,
+    backgroundColor: colors.fill,
     opacity: 100,
     strokeWidth: 2,
     roughness: 0,
@@ -149,11 +185,11 @@ function buildNodeLabel(node: LayoutNode): ExcalidrawText {
   }
 }
 
-function buildArrow(edge: LayoutEdge, sourceNode: LayoutNode, targetNode: LayoutNode): ExcalidrawArrow {
-  const arrowX = sourceNode.x + sourceNode.width
-  const arrowY = sourceNode.y + sourceNode.height / 2
-  const dx = targetNode.x - arrowX
-  const dy = (targetNode.y + targetNode.height / 2) - arrowY
+function buildArrow(edge: LayoutEdge, source: Positioned, target: Positioned): ExcalidrawArrow {
+  const arrowX = source.x + source.width
+  const arrowY = source.y + source.height / 2
+  const dx = target.x - arrowX
+  const dy = (target.y + target.height / 2) - arrowY
 
   return {
     id: edge.id,
@@ -163,12 +199,28 @@ function buildArrow(edge: LayoutEdge, sourceNode: LayoutNode, targetNode: Layout
     width: Math.abs(dx),
     height: Math.abs(dy),
     points: [[0, 0], [dx, dy]],
-    startBinding: { elementId: edge.sourceId, focus: 0, gap: 5 },
-    endBinding: { elementId: edge.targetId, focus: 0, gap: 5 },
+    startBinding: { elementId: source.id, focus: 0, gap: 5 },
+    endBinding: { elementId: target.id, focus: 0, gap: 5 },
     startArrowhead: null,
     endArrowhead: 'arrow',
     strokeWidth: 2,
     roughness: 0,
+  }
+}
+
+function buildEdgeLabel(edge: LayoutEdge, source: Positioned, target: Positioned): ExcalidrawText {
+  const midX = (source.x + source.width / 2 + target.x + target.width / 2) / 2
+  const midY = (source.y + source.height / 2 + target.y + target.height / 2) / 2
+  return {
+    id: `${edge.id}_label`,
+    type: 'text',
+    x: midX - 30,
+    y: midY - 10,
+    text: edge.label ?? '',
+    fontSize: 12,
+    fontFamily: 1,
+    textAlign: 'center',
+    verticalAlign: 'middle',
   }
 }
 
@@ -180,21 +232,26 @@ export async function renderExcalidraw(
   try {
     const elements: ExcalidrawElement[] = []
 
-    for (const zone of diagram.zones) {
-      elements.push(buildZoneRect(zone))
+    diagram.zones.forEach((zone, zi) => {
+      const colors = GROUP_COLORS[zi % GROUP_COLORS.length]
+      elements.push(buildZoneRect(zone, colors))
       elements.push(buildZoneLabel(zone))
-    }
+    })
 
     for (const node of diagram.nodes) {
-      elements.push(buildNodeRect(node))
+      const colors = getNodeColors(node, diagram.zones)
+      elements.push(buildNodeRect(node, colors))
       elements.push(buildNodeLabel(node))
     }
 
     for (const edge of diagram.edges) {
-      const sourceNode = diagram.nodes.find(n => n.id === edge.sourceId)
-      const targetNode = diagram.nodes.find(n => n.id === edge.targetId)
-      if (!sourceNode || !targetNode) continue
-      elements.push(buildArrow(edge, sourceNode, targetNode))
+      const source = findPositioned(edge.sourceId, diagram.nodes, diagram.zones)
+      const target = findPositioned(edge.targetId, diagram.nodes, diagram.zones)
+      if (!source || !target) continue
+      elements.push(buildArrow(edge, source, target))
+      if (edge.label) {
+        elements.push(buildEdgeLabel(edge, source, target))
+      }
     }
 
     const scene: ExcalidrawScene = {

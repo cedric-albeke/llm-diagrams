@@ -22,8 +22,12 @@ async function tryCanvasExport(outputDir: string, format: 'svg' | 'png'): Promis
 
 async function tryMmdcExport(mermaidFile: string, outputDir: string, format: 'svg' | 'png'): Promise<string | null> {
   const filePath = path.join(outputDir, `system-overview.${format}`)
+  const args = ['mmdc', '-i', mermaidFile, '-o', filePath, '-w', '2048', '--backgroundColor', 'transparent']
+  if (format === 'png') {
+    args.push('-s', '2')
+  }
   try {
-    await execFileAsync('npx', ['mmdc', '-i', mermaidFile, '-o', filePath], { timeout: 30000 })
+    await execFileAsync('npx', args, { timeout: 30000 })
     return filePath
   } catch {
     return null

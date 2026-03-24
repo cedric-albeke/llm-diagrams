@@ -29,6 +29,9 @@ export async function extractImportGraph(config: AnalysisConfig): Promise<Import
     doNotFollow: {
       path: ['node_modules', ...safeExcludePatterns],
     },
+    exclude: {
+      path: ['node_modules', ...safeExcludePatterns],
+    },
     ruleSet: {},
   })
 
@@ -42,26 +45,39 @@ export async function extractImportGraph(config: AnalysisConfig): Promise<Import
     return fullPath
   }
 
-  const modules: ModuleNode[] = cruiseOutput.modules.map((m) => {
-    const relativePath = toRelative(m.source)
-    const basename = path.basename(relativePath)
-    const isBarrel = basename === 'index.ts' || basename === 'index.js'
-    return {
-      path: relativePath,
-      isBarrel,
-      exports: [],
-      directives: [],
-    }
-  })
+  function isInSrcDir(fullPath: string): boolean {
+    const resolved = path.resolve(fullPath)
+    return resolved.startsWith(srcDirResolved + path.sep) || resolved === srcDirResolved
+  }
+
+  const modules: ModuleNode[] = cruiseOutput.modules
+    .filter((m) => isInSrcDir(m.source))
+    .map((m) => {
+      const relativePath = toRelative(m.source)
+      const basename = path.basename(relativePath)
+      const isBarrel = basename === 'index.ts' || basename === 'index.js'
+      return {
+        path: relativePath,
+        isBarrel,
+        exports: [],
+        directives: [],
+      }
+    })
+
+  const modulePathSet = new Set(modules.map(m => m.path))
 
   const edges: ImportEdge[] = []
   for (const m of cruiseOutput.modules) {
+    if (!isInSrcDir(m.source)) continue
     const sourcePath = toRelative(m.source)
 
     for (const dep of m.dependencies as IDependency[]) {
       if (!dep.followable || dep.coreModule || dep.couldNotResolve) continue
+      if (!isInSrcDir(dep.resolved)) continue
 
       const targetPath = toRelative(dep.resolved)
+      if (!modulePathSet.has(targetPath)) continue
+
       const types = dep.dependencyTypes.filter((t) => t !== 'local')
 
       edges.push({

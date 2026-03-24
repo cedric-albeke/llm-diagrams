@@ -104,7 +104,7 @@ describe('renderExcalidraw', () => {
 
     const zoneRect = elements.find(e => e.id === 'zone_z1' && e.type === 'rectangle')
     expect(zoneRect).toBeDefined()
-    expect(zoneRect?.opacity).toBe(10)
+    expect(zoneRect?.opacity).toBe(20)
 
     const zoneLabel = elements.find(e => e.id === 'zone_z1_label' && e.type === 'text')
     expect(zoneLabel).toBeDefined()

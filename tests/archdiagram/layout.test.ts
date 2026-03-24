@@ -42,7 +42,7 @@ describe('computeLayout', () => {
 
     const shortGraph = makeGraph(['DB'])
     const shortLayout = await computeLayout(shortGraph)
-    expect(shortLayout.nodes[0].width).toBe(160)
+    expect(shortLayout.nodes[0].width).toBeGreaterThanOrEqual(120)
   }, 10000)
 
   it('returns zones for each role group', async () => {

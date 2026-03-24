@@ -409,7 +409,31 @@ export function buildDirectoryFallback(graph: ImportGraph): ArchitectureGraph {
     role: dir === 'root' ? 'shared' : 'backend',
   }))
 
-  return { groups, relationships: [], c4Level: 1 }
+  // Build file→group lookup
+  const fileToGroup = new Map<string, string>()
+  for (const group of groups) {
+    for (const file of group.files) {
+      fileToGroup.set(file, group.name)
+    }
+  }
+
+  // Compute inter-group relationships from edges
+  const relationshipCounts = new Map<string, number>()
+  for (const edge of graph.edges) {
+    const fromGroup = fileToGroup.get(edge.source)
+    const toGroup = fileToGroup.get(edge.target)
+    if (fromGroup && toGroup && fromGroup !== toGroup) {
+      const key = `${fromGroup}→${toGroup}`
+      relationshipCounts.set(key, (relationshipCounts.get(key) ?? 0) + 1)
+    }
+  }
+
+  const relationships: ModuleRelationship[] = Array.from(relationshipCounts.entries()).map(([key, count]) => {
+    const [from, to] = key.split('→')
+    return { from, to, label: `${count} imports`, style: 'sync' as const }
+  })
+
+  return { groups, relationships, c4Level: 1 }
 }
 
 export function buildArchitectPrompt(summaries: FileSummary[], edges: ImportEdge[]): string {

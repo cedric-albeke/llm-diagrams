@@ -23,7 +23,7 @@ export async function renderMermaid(
       const groupId = sanitizeId(group.name)
       const groupLabel = sanitizeLabel(group.name)
       lines.push(`  subgraph ${groupId}["${groupLabel}"]`)
-      for (const file of group.files.slice(0, 3)) {
+      for (const file of group.files) {
         const fileId = sanitizeId(file.replace(/\//g, '_').replace(/\.ts$/, ''))
         const fileLabel = sanitizeLabel(path.basename(file, '.ts'))
         lines.push(`    ${fileId}["${fileLabel}"]`)

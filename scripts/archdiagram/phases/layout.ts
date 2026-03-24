@@ -1,5 +1,6 @@
 import ELK from 'elkjs/lib/elk.bundled.js'
 import type { ElkNode, ElkExtendedEdge } from 'elkjs/lib/elk-api.js'
+import path from 'path'
 import type {
   ArchitectureGraph,
   LayoutedDiagram,
@@ -13,13 +14,15 @@ function sanitizeId(name: string): string {
   return name.replace(/[^a-zA-Z0-9-_]/g, '_').toLowerCase()
 }
 
-const ROLE_COLORS: Record<string, string> = {
-  frontend: '#a5d8ff',
-  backend: '#eebefa',
-  shared: '#e9ecef',
-  external: '#ffd8a8',
-  data: '#99e9f2',
-}
+const GROUP_COLORS = [
+  { fill: '#a5d8ff', stroke: '#1971c2' },
+  { fill: '#eebefa', stroke: '#862e9c' },
+  { fill: '#b2f2bb', stroke: '#2b8a3e' },
+  { fill: '#ffd8a8', stroke: '#e67700' },
+  { fill: '#99e9f2', stroke: '#0c8599' },
+  { fill: '#ffc9c9', stroke: '#c92a2a' },
+  { fill: '#e9ecef', stroke: '#495057' },
+]
 
 export interface LayoutConfig {
   direction?: LayoutDirection
@@ -37,78 +40,95 @@ export async function computeLayout(
     layoutOptions: {
       'elk.algorithm': 'layered',
       'elk.direction': direction,
-      'elk.spacing.nodeNode': '80',
-      'elk.layered.spacing.nodeNodeBetweenLayers': '120',
+      'elk.spacing.nodeNode': '40',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '100',
       'elk.edgeRouting': 'ORTHOGONAL',
+      'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
     },
-    children: archGraph.groups.map(g => ({
-      id: sanitizeId(g.name),
-      width: Math.max(160, g.name.length * 9),
-      height: 80,
+    children: archGraph.groups.map(group => ({
+      id: sanitizeId(group.name),
+      layoutOptions: {
+        'elk.padding': '[top=40,left=20,bottom=20,right=20]',
+        'elk.algorithm': 'layered',
+        'elk.direction': 'DOWN',
+      },
+      children: group.files.map(file => ({
+        id: sanitizeId(file),
+        width: Math.max(120, path.basename(file, '.ts').replace('.tsx', '').length * 9 + 20),
+        height: 40,
+        labels: [{ text: path.basename(file, '.ts').replace('.tsx', '') }],
+      })),
     })),
     edges: archGraph.relationships.map(r => ({
       id: `${sanitizeId(r.from)}_to_${sanitizeId(r.to)}`,
       sources: [sanitizeId(r.from)],
       targets: [sanitizeId(r.to)],
+      labels: r.label ? [{ text: r.label }] : [],
     })),
   }
 
   const layouted = await elk.layout(elkGraph)
+  const layoutedEdges = (layouted.edges ?? []) as ElkExtendedEdge[]
 
-  const nodes: LayoutNode[] = (layouted.children ?? []).map((child: ElkNode, i: number) => {
-    const group = archGraph.groups[i]
-    return {
-      id: child.id ?? '',
-      x: child.x ?? 0,
-      y: child.y ?? 0,
-      width: child.width ?? 160,
-      height: child.height ?? 80,
-      label: group?.name ?? (child.id ?? ''),
-      group: group?.role,
-      color: ROLE_COLORS[group?.role ?? 'shared'] ?? '#e9ecef',
-    }
+  const nodes: LayoutNode[] = []
+  const zones: LayoutZone[] = []
+
+  ;(layouted.children ?? []).forEach((groupNode: ElkNode, gi: number) => {
+    const group = archGraph.groups[gi]
+    const groupX = groupNode.x ?? 0
+    const groupY = groupNode.y ?? 0
+    const groupColor = GROUP_COLORS[gi % GROUP_COLORS.length]
+
+    zones.push({
+      id: sanitizeId(group.name),
+      x: groupX,
+      y: groupY,
+      width: groupNode.width ?? 200,
+      height: groupNode.height ?? 200,
+      label: group.name,
+      color: groupColor.fill,
+    })
+
+    ;(groupNode.children ?? []).forEach((fileNode: ElkNode, fi: number) => {
+      const fileAbsX = (fileNode.x ?? 0) + groupX
+      const fileAbsY = (fileNode.y ?? 0) + groupY
+      const file = group.files[fi]
+      const label = file
+        ? path.basename(file, '.ts').replace('.tsx', '')
+        : (fileNode.id ?? '')
+
+      nodes.push({
+        id: fileNode.id ?? `${sanitizeId(group.name)}_file_${fi}`,
+        x: fileAbsX,
+        y: fileAbsY,
+        width: fileNode.width ?? 120,
+        height: fileNode.height ?? 40,
+        label,
+        group: group.name,
+        color: groupColor.fill,
+      })
+    })
   })
 
-  const edges: LayoutEdge[] = (layouted.edges ?? []).map((edge: ElkExtendedEdge, i: number) => {
-    const rel = archGraph.relationships[i]
-    const bendPoints: Array<{ x: number; y: number }> = edge.sections?.[0]?.bendPoints ?? []
+  const edges: LayoutEdge[] = archGraph.relationships.map(r => {
+    const edgeId = `${sanitizeId(r.from)}_to_${sanitizeId(r.to)}`
+    const elkEdge = layoutedEdges.find(e => e.id === edgeId)
+    const bendPoints: Array<{ x: number; y: number }> = elkEdge?.sections?.[0]?.bendPoints ?? []
     return {
-      id: edge.id ?? '',
-      sourceId: edge.sources?.[0] ?? '',
-      targetId: edge.targets?.[0] ?? '',
-      label: rel?.label,
+      id: edgeId,
+      sourceId: `zone_${sanitizeId(r.from)}`,
+      targetId: `zone_${sanitizeId(r.to)}`,
+      label: r.label,
       bendPoints: bendPoints.map(bp => ({ x: bp.x, y: bp.y })),
     }
   })
 
-  const maxX = nodes.length > 0 ? Math.max(...nodes.map(n => n.x + n.width)) : 0
-  const maxY = nodes.length > 0 ? Math.max(...nodes.map(n => n.y + n.height)) : 0
-
-  const roleNodes = new Map<string, LayoutNode[]>()
-  for (const node of nodes) {
-    const role = node.group ?? 'shared'
-    const roleGroup = roleNodes.get(role) ?? []
-    roleGroup.push(node)
-    roleNodes.set(role, roleGroup)
-  }
-
-  const PADDING = 40
-  const zones: LayoutZone[] = Array.from(roleNodes.entries()).map(([role, roleNodeList]) => {
-    const minX = Math.min(...roleNodeList.map(n => n.x)) - PADDING
-    const minY = Math.min(...roleNodeList.map(n => n.y)) - PADDING
-    const maxZoneX = Math.max(...roleNodeList.map(n => n.x + n.width)) + PADDING
-    const maxZoneY = Math.max(...roleNodeList.map(n => n.y + n.height)) + PADDING
-
-    return {
-      id: `zone_${role}`,
-      x: Math.max(0, minX),
-      y: Math.max(0, minY),
-      width: maxZoneX - Math.max(0, minX),
-      height: maxZoneY - Math.max(0, minY),
-      label: role.charAt(0).toUpperCase() + role.slice(1),
-      color: ROLE_COLORS[role] ?? '#e9ecef',
-    }
-  })
+  const allX = nodes.map(n => n.x + n.width)
+  const allY = nodes.map(n => n.y + n.height)
+  const zoneXW = zones.map(z => z.x + z.width)
+  const zoneYH = zones.map(z => z.y + z.height)
+  const maxX = Math.max(0, ...allX, ...zoneXW)
+  const maxY = Math.max(0, ...allY, ...zoneYH)
 
   return { nodes, edges, width: maxX, height: maxY, zones }
 }

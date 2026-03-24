@@ -47,11 +47,17 @@ describe('orchestrateLLMReasoning', () => {
     }
   })
 
-  it('relationships is empty in fallback mode', async () => {
+  it('fallback mode computes inter-directory relationships from edges', async () => {
     const graph = loadExpectedGraph()
     const result = await orchestrateLLMReasoning(graph, NONE_CONFIG)
 
-    expect(result.relationships).toHaveLength(0)
+    expect(result.relationships).toBeDefined()
+    expect(Array.isArray(result.relationships)).toBe(true)
+    for (const rel of result.relationships) {
+      expect(rel.from).toBeTruthy()
+      expect(rel.to).toBeTruthy()
+      expect(rel.from).not.toBe(rel.to)
+    }
   })
 
   it('files in root directory are grouped under Root', async () => {
