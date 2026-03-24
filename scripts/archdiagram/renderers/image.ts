@@ -5,7 +5,7 @@ import path from 'path'
 import type { RenderResult } from '../types.js'
 
 const execFileAsync = promisify(execFile)
-const CANVAS_URL = 'http://localhost:3111'
+const CANVAS_URL = 'http://localhost:3444'
 
 async function tryCanvasExport(outputDir: string, format: 'svg' | 'png'): Promise<string | null> {
   try {

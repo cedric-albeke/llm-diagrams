@@ -17,7 +17,7 @@ function makeSimpleDiagram(): LayoutedDiagram {
       { id: 'node_b', x: 420, y: 130, width: 160, height: 40, label: 'ServiceB', group: 'Frontend' },
     ],
     edges: [
-      { id: 'edge_ab', sourceId: 'zone_z_backend', targetId: 'zone_z_frontend', label: '3 imports' },
+      { id: 'edge_ab', sourceId: 'zone_z_backend', targetId: 'zone_z_frontend', label: '3 imports', bendPoints: [{ x: 320, y: 150 }, { x: 380, y: 150 }] },
     ],
     zones: [
       { id: 'z_backend', x: 80, y: 80, width: 240, height: 140, label: 'Backend', color: '#eebefa' },
@@ -112,15 +112,14 @@ describe('renderExcalidraw', () => {
     expect(zoneLabel?.fontSize).toBe(20)
   })
 
-  it('edge labels have white background for readability', async () => {
+  it('edge labels are text-only without background rectangles', async () => {
     const diagram = makeSimpleDiagram()
     const result = await renderExcalidraw(diagram, OUTPUT_DIR, 'test-edge-labels')
     const parsed = JSON.parse(fs.readFileSync(result.filePath, 'utf-8'))
-    const elements = parsed.elements as { id: string; type: string; text?: string; backgroundColor?: string }[]
+    const elements = parsed.elements as { id: string; type: string; text?: string }[]
 
-    const labelBg = elements.find(e => e.id === 'edge_ab_bg' && e.type === 'rectangle')
-    expect(labelBg).toBeDefined()
-    expect(labelBg?.backgroundColor).toBe('#ffffff')
+    const labelBg = elements.find(e => e.id === 'edge_ab_bg')
+    expect(labelBg).toBeUndefined()
 
     const labelText = elements.find(e => e.id === 'edge_ab_label' && e.type === 'text')
     expect(labelText).toBeDefined()

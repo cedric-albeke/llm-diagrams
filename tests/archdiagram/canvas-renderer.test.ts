@@ -22,7 +22,7 @@ function makeSimpleDiagram(): LayoutedDiagram {
 describe('renderToCanvas — no canvas running (ECONNREFUSED simulation)', () => {
   beforeEach(() => {
     const connRefused = Object.assign(new Error('fetch failed'), {
-      cause: Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:3111'), { code: 'ECONNREFUSED' }),
+      cause: Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:3444'), { code: 'ECONNREFUSED' }),
     })
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(connRefused))
   })

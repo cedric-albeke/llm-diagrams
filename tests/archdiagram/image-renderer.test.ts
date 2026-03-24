@@ -11,7 +11,7 @@ function makeTempDir(): string {
 describe('renderImage — no canvas, no mmdc', () => {
   beforeEach(() => {
     const connRefused = Object.assign(new Error('fetch failed'), {
-      cause: Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:3111'), { code: 'ECONNREFUSED' }),
+      cause: Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:3444'), { code: 'ECONNREFUSED' }),
     })
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(connRefused))
     vi.mock('child_process', async (importOriginal) => {

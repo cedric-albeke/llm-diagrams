@@ -1,6 +1,6 @@
 import type { LayoutedDiagram, RenderResult } from '../types.js'
 
-const CANVAS_URL = 'http://localhost:3111'
+const CANVAS_URL = 'http://localhost:3444'
 
 interface CanvasElement {
   id: string
