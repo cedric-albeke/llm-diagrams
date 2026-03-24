@@ -5,10 +5,10 @@
     {
       "id": "zone_root",
       "type": "rectangle",
-      "x": 901,
+      "x": 1061,
       "y": 12,
       "width": 213,
-      "height": 300,
+      "height": 310,
       "strokeColor": "#364fc7",
       "backgroundColor": "#dbe4ff",
       "opacity": 30,
@@ -22,8 +22,10 @@
     {
       "id": "zone_root_label",
       "type": "text",
-      "x": 915,
-      "y": 22,
+      "x": 1075,
+      "y": 24,
+      "width": 72,
+      "height": 30,
       "text": "ROOT",
       "fontSize": 20,
       "fontFamily": 2,
@@ -34,10 +36,10 @@
     {
       "id": "zone_phases",
       "type": "rectangle",
-      "x": 398,
-      "y": 103,
+      "x": 478,
+      "y": 124.66666666666666,
       "width": 303,
-      "height": 600,
+      "height": 610,
       "strokeColor": "#6741d9",
       "backgroundColor": "#e5dbff",
       "opacity": 30,
@@ -51,8 +53,10 @@
     {
       "id": "zone_phases_label",
       "type": "text",
-      "x": 412,
-      "y": 113,
+      "x": 492,
+      "y": 136.66666666666666,
+      "width": 98,
+      "height": 30,
       "text": "PHASES",
       "fontSize": 20,
       "fontFamily": 2,
@@ -63,10 +67,10 @@
     {
       "id": "zone_renderers",
       "type": "rectangle",
-      "x": 493.3333333333333,
-      "y": 743,
+      "x": 573.3333333333334,
+      "y": 794.6666666666666,
       "width": 160,
-      "height": 300,
+      "height": 310,
       "strokeColor": "#2b8a3e",
       "backgroundColor": "#d3f9d8",
       "opacity": 30,
@@ -80,8 +84,10 @@
     {
       "id": "zone_renderers_label",
       "type": "text",
-      "x": 507.3333333333333,
-      "y": 753,
+      "x": 587.3333333333334,
+      "y": 806.6666666666666,
+      "width": 137,
+      "height": 30,
       "text": "RENDERERS",
       "fontSize": 20,
       "fontFamily": 2,
@@ -92,10 +98,10 @@
     {
       "id": "zone_utils",
       "type": "rectangle",
-      "x": 1314,
-      "y": 67,
+      "x": 1554,
+      "y": 67.83333333333333,
       "width": 195,
-      "height": 180,
+      "height": 190,
       "strokeColor": "#e67700",
       "backgroundColor": "#fff3bf",
       "opacity": 30,
@@ -109,8 +115,10 @@
     {
       "id": "zone_utils_label",
       "type": "text",
-      "x": 1328,
-      "y": 77,
+      "x": 1568,
+      "y": 79.83333333333333,
+      "width": 85,
+      "height": 30,
       "text": "UTILS",
       "fontSize": 20,
       "fontFamily": 2,
@@ -122,9 +130,9 @@
       "id": "zone_tui",
       "type": "rectangle",
       "x": 12,
-      "y": 115,
+      "y": 137.66666666666666,
       "width": 186,
-      "height": 720,
+      "height": 730,
       "strokeColor": "#087f5b",
       "backgroundColor": "#c3fae8",
       "opacity": 30,
@@ -139,7 +147,9 @@
       "id": "zone_tui_label",
       "type": "text",
       "x": 26,
-      "y": 125,
+      "y": 149.66666666666666,
+      "width": 59,
+      "height": 30,
       "text": "TUI",
       "fontSize": 20,
       "fontFamily": 2,
@@ -150,8 +160,8 @@
     {
       "id": "config-serializer_ts",
       "type": "rectangle",
-      "x": 921,
-      "y": 132,
+      "x": 1081,
+      "y": 142,
       "width": 173,
       "height": 40,
       "strokeColor": "#1971c2",
@@ -167,8 +177,8 @@
     {
       "id": "config-serializer_ts_label",
       "type": "text",
-      "x": 921,
-      "y": 132,
+      "x": 1081,
+      "y": 142,
       "width": 173,
       "height": 40,
       "text": "config-serializer",
@@ -180,8 +190,8 @@
     {
       "id": "config_ts",
       "type": "rectangle",
-      "x": 947.5,
-      "y": 192,
+      "x": 1107.5,
+      "y": 202,
       "width": 120,
       "height": 40,
       "strokeColor": "#1971c2",
@@ -197,8 +207,8 @@
     {
       "id": "config_ts_label",
       "type": "text",
-      "x": 947.5,
-      "y": 192,
+      "x": 1107.5,
+      "y": 202,
       "width": 120,
       "height": 40,
       "text": "config",
@@ -210,8 +220,8 @@
     {
       "id": "types_ts",
       "type": "rectangle",
-      "x": 947.5,
-      "y": 72,
+      "x": 1107.5,
+      "y": 82,
       "width": 120,
       "height": 40,
       "strokeColor": "#1971c2",
@@ -227,8 +237,8 @@
     {
       "id": "types_ts_label",
       "type": "text",
-      "x": 947.5,
-      "y": 72,
+      "x": 1107.5,
+      "y": 82,
       "width": 120,
       "height": 40,
       "text": "types",
@@ -240,8 +250,8 @@
     {
       "id": "index_ts",
       "type": "rectangle",
-      "x": 947.5,
-      "y": 252,
+      "x": 1107.5,
+      "y": 262,
       "width": 120,
       "height": 40,
       "strokeColor": "#1971c2",
@@ -257,8 +267,8 @@
     {
       "id": "index_ts_label",
       "type": "text",
-      "x": 947.5,
-      "y": 252,
+      "x": 1107.5,
+      "y": 262,
       "width": 120,
       "height": 40,
       "text": "index",
@@ -270,8 +280,8 @@
     {
       "id": "phases_analyze_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 223,
+      "x": 569.5,
+      "y": 254.66666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -287,8 +297,8 @@
     {
       "id": "phases_analyze_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 223,
+      "x": 569.5,
+      "y": 254.66666666666666,
       "width": 120,
       "height": 40,
       "text": "analyze",
@@ -300,8 +310,8 @@
     {
       "id": "phases_layout_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 403,
+      "x": 569.5,
+      "y": 434.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -317,8 +327,8 @@
     {
       "id": "phases_layout_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 403,
+      "x": 569.5,
+      "y": 434.66666666666663,
       "width": 120,
       "height": 40,
       "text": "layout",
@@ -330,8 +340,8 @@
     {
       "id": "phases_reason_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 163,
+      "x": 569.5,
+      "y": 194.66666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -347,8 +357,8 @@
     {
       "id": "phases_reason_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 163,
+      "x": 569.5,
+      "y": 194.66666666666666,
       "width": 120,
       "height": 40,
       "text": "reason",
@@ -360,8 +370,8 @@
     {
       "id": "phases_llm_claude-subscription-adapter_ts",
       "type": "rectangle",
-      "x": 418,
-      "y": 523,
+      "x": 498,
+      "y": 554.6666666666666,
       "width": 263,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -377,8 +387,8 @@
     {
       "id": "phases_llm_claude-subscription-adapter_ts_label",
       "type": "text",
-      "x": 418,
-      "y": 523,
+      "x": 498,
+      "y": 554.6666666666666,
       "width": 263,
       "height": 40,
       "text": "claude-subscription-adapter",
@@ -390,8 +400,8 @@
     {
       "id": "phases_llm_types_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 583,
+      "x": 569.5,
+      "y": 614.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -407,8 +417,8 @@
     {
       "id": "phases_llm_types_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 583,
+      "x": 569.5,
+      "y": 614.6666666666666,
       "width": 120,
       "height": 40,
       "text": "types",
@@ -420,8 +430,8 @@
     {
       "id": "phases_llm_index_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 283,
+      "x": 569.5,
+      "y": 314.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -437,8 +447,8 @@
     {
       "id": "phases_llm_index_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 283,
+      "x": 569.5,
+      "y": 314.66666666666663,
       "width": 120,
       "height": 40,
       "text": "index",
@@ -450,8 +460,8 @@
     {
       "id": "phases_llm_anthropic-api-adapter_ts",
       "type": "rectangle",
-      "x": 445,
-      "y": 343,
+      "x": 525,
+      "y": 374.66666666666663,
       "width": 209,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -467,8 +477,8 @@
     {
       "id": "phases_llm_anthropic-api-adapter_ts_label",
       "type": "text",
-      "x": 445,
-      "y": 343,
+      "x": 525,
+      "y": 374.66666666666663,
       "width": 209,
       "height": 40,
       "text": "anthropic-api-adapter",
@@ -480,8 +490,8 @@
     {
       "id": "phases_llm_openai-compatible-adapter_ts",
       "type": "rectangle",
-      "x": 427,
-      "y": 463,
+      "x": 507,
+      "y": 494.66666666666663,
       "width": 245,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -497,8 +507,8 @@
     {
       "id": "phases_llm_openai-compatible-adapter_ts_label",
       "type": "text",
-      "x": 427,
-      "y": 463,
+      "x": 507,
+      "y": 494.66666666666663,
       "width": 245,
       "height": 40,
       "text": "openai-compatible-adapter",
@@ -510,8 +520,8 @@
     {
       "id": "phases_render_ts",
       "type": "rectangle",
-      "x": 489.5,
-      "y": 643,
+      "x": 569.5,
+      "y": 674.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#7048e8",
@@ -527,8 +537,8 @@
     {
       "id": "phases_render_ts_label",
       "type": "text",
-      "x": 489.5,
-      "y": 643,
+      "x": 569.5,
+      "y": 674.6666666666666,
       "width": 120,
       "height": 40,
       "text": "render",
@@ -540,8 +550,8 @@
     {
       "id": "renderers_canvas_ts",
       "type": "rectangle",
-      "x": 513.3333333333333,
-      "y": 863,
+      "x": 593.3333333333334,
+      "y": 924.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#2f9e44",
@@ -557,8 +567,8 @@
     {
       "id": "renderers_canvas_ts_label",
       "type": "text",
-      "x": 513.3333333333333,
-      "y": 863,
+      "x": 593.3333333333334,
+      "y": 924.6666666666666,
       "width": 120,
       "height": 40,
       "text": "canvas",
@@ -570,8 +580,8 @@
     {
       "id": "renderers_excalidraw_ts",
       "type": "rectangle",
-      "x": 513.3333333333333,
-      "y": 923,
+      "x": 593.3333333333334,
+      "y": 984.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#2f9e44",
@@ -587,8 +597,8 @@
     {
       "id": "renderers_excalidraw_ts_label",
       "type": "text",
-      "x": 513.3333333333333,
-      "y": 923,
+      "x": 593.3333333333334,
+      "y": 984.6666666666666,
       "width": 120,
       "height": 40,
       "text": "excalidraw",
@@ -600,8 +610,8 @@
     {
       "id": "renderers_image_ts",
       "type": "rectangle",
-      "x": 513.3333333333333,
-      "y": 803,
+      "x": 593.3333333333334,
+      "y": 864.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#2f9e44",
@@ -617,8 +627,8 @@
     {
       "id": "renderers_image_ts_label",
       "type": "text",
-      "x": 513.3333333333333,
-      "y": 803,
+      "x": 593.3333333333334,
+      "y": 864.6666666666666,
       "width": 120,
       "height": 40,
       "text": "image",
@@ -630,8 +640,8 @@
     {
       "id": "renderers_mermaid_ts",
       "type": "rectangle",
-      "x": 513.3333333333333,
-      "y": 983,
+      "x": 593.3333333333334,
+      "y": 1044.6666666666665,
       "width": 120,
       "height": 40,
       "strokeColor": "#2f9e44",
@@ -647,8 +657,8 @@
     {
       "id": "renderers_mermaid_ts_label",
       "type": "text",
-      "x": 513.3333333333333,
-      "y": 983,
+      "x": 593.3333333333334,
+      "y": 1044.6666666666665,
       "width": 120,
       "height": 40,
       "text": "mermaid",
@@ -660,8 +670,8 @@
     {
       "id": "utils_barrel-resolver_ts",
       "type": "rectangle",
-      "x": 1334,
-      "y": 127,
+      "x": 1574,
+      "y": 137.83333333333331,
       "width": 155,
       "height": 40,
       "strokeColor": "#e67700",
@@ -677,8 +687,8 @@
     {
       "id": "utils_barrel-resolver_ts_label",
       "type": "text",
-      "x": 1334,
-      "y": 127,
+      "x": 1574,
+      "y": 137.83333333333331,
       "width": 155,
       "height": 40,
       "text": "barrel-resolver",
@@ -690,8 +700,8 @@
     {
       "id": "utils_graph-utils_ts",
       "type": "rectangle",
-      "x": 1351.5,
-      "y": 187,
+      "x": 1591.5,
+      "y": 197.83333333333331,
       "width": 120,
       "height": 40,
       "strokeColor": "#e67700",
@@ -707,8 +717,8 @@
     {
       "id": "utils_graph-utils_ts_label",
       "type": "text",
-      "x": 1351.5,
-      "y": 187,
+      "x": 1591.5,
+      "y": 197.83333333333331,
       "width": 120,
       "height": 40,
       "text": "graph-utils",
@@ -721,7 +731,7 @@
       "id": "tui_app_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 235,
+      "y": 267.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -738,7 +748,7 @@
       "id": "tui_app_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 235,
+      "y": 267.66666666666663,
       "width": 120,
       "height": 40,
       "text": "App",
@@ -751,7 +761,7 @@
       "id": "tui_hooks_usescreen_ts",
       "type": "rectangle",
       "x": 45,
-      "y": 415,
+      "y": 447.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -768,7 +778,7 @@
       "id": "tui_hooks_usescreen_ts_label",
       "type": "text",
       "x": 45,
-      "y": 415,
+      "y": 447.66666666666663,
       "width": 120,
       "height": 40,
       "text": "useScreen",
@@ -781,7 +791,7 @@
       "id": "tui_types_ts",
       "type": "rectangle",
       "x": 45,
-      "y": 175,
+      "y": 207.66666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -798,7 +808,7 @@
       "id": "tui_types_ts_label",
       "type": "text",
       "x": 45,
-      "y": 175,
+      "y": 207.66666666666666,
       "width": 120,
       "height": 40,
       "text": "types",
@@ -811,7 +821,7 @@
       "id": "tui_screens_configeditor_tsx",
       "type": "rectangle",
       "x": 41,
-      "y": 595,
+      "y": 627.6666666666666,
       "width": 128,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -828,7 +838,7 @@
       "id": "tui_screens_configeditor_tsx_label",
       "type": "text",
       "x": 41,
-      "y": 595,
+      "y": 627.6666666666666,
       "width": 128,
       "height": 40,
       "text": "ConfigEditor",
@@ -841,7 +851,7 @@
       "id": "tui_screens_confirm_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 655,
+      "y": 687.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -858,7 +868,7 @@
       "id": "tui_screens_confirm_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 655,
+      "y": 687.6666666666666,
       "width": 120,
       "height": 40,
       "text": "Confirm",
@@ -871,7 +881,7 @@
       "id": "tui_screens_dashboard_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 295,
+      "y": 327.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -888,7 +898,7 @@
       "id": "tui_screens_dashboard_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 295,
+      "y": 327.66666666666663,
       "width": 120,
       "height": 40,
       "text": "Dashboard",
@@ -901,7 +911,7 @@
       "id": "tui_screens_formatfilter_tsx",
       "type": "rectangle",
       "x": 41,
-      "y": 355,
+      "y": 387.66666666666663,
       "width": 128,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -918,7 +928,7 @@
       "id": "tui_screens_formatfilter_tsx_label",
       "type": "text",
       "x": 41,
-      "y": 355,
+      "y": 387.66666666666663,
       "width": 128,
       "height": 40,
       "text": "FormatFilter",
@@ -931,7 +941,7 @@
       "id": "tui_screens_providerselect_tsx",
       "type": "rectangle",
       "x": 32,
-      "y": 535,
+      "y": 567.6666666666666,
       "width": 146,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -948,7 +958,7 @@
       "id": "tui_screens_providerselect_tsx_label",
       "type": "text",
       "x": 32,
-      "y": 535,
+      "y": 567.6666666666666,
       "width": 146,
       "height": 40,
       "text": "ProviderSelect",
@@ -961,7 +971,7 @@
       "id": "tui_screens_results_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 715,
+      "y": 747.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -978,7 +988,7 @@
       "id": "tui_screens_results_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 715,
+      "y": 747.6666666666666,
       "width": 120,
       "height": 40,
       "text": "Results",
@@ -991,7 +1001,7 @@
       "id": "tui_screens_welcome_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 475,
+      "y": 507.66666666666663,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -1008,7 +1018,7 @@
       "id": "tui_screens_welcome_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 475,
+      "y": 507.66666666666663,
       "width": 120,
       "height": 40,
       "text": "Welcome",
@@ -1021,7 +1031,7 @@
       "id": "tui_index_tsx",
       "type": "rectangle",
       "x": 45,
-      "y": 775,
+      "y": 807.6666666666666,
       "width": 120,
       "height": 40,
       "strokeColor": "#0ca678",
@@ -1038,7 +1048,7 @@
       "id": "tui_index_tsx_label",
       "type": "text",
       "x": 45,
-      "y": 775,
+      "y": 807.6666666666666,
       "width": 120,
       "height": 40,
       "text": "index",
@@ -1050,26 +1060,26 @@
     {
       "id": "root_to_phases",
       "type": "arrow",
-      "x": 901,
+      "x": 1061,
       "y": 42,
-      "width": 200,
-      "height": 91,
+      "width": 280,
+      "height": 112.66666666666666,
       "points": [
         [
           0,
           0
         ],
         [
-          -100,
+          -240,
           0
         ],
         [
-          -100,
-          91
+          -240,
+          112.66666666666666
         ],
         [
-          -200,
-          91
+          -280,
+          112.66666666666666
         ]
       ],
       "startBinding": null,
@@ -1083,8 +1093,8 @@
     {
       "id": "root_to_phases_bg",
       "type": "rectangle",
-      "x": 761.5,
-      "y": 59.5,
+      "x": 881.5,
+      "y": 70.33333333333333,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1100,8 +1110,8 @@
     {
       "id": "root_to_phases_label",
       "type": "text",
-      "x": 761.5,
-      "y": 59.5,
+      "x": 881.5,
+      "y": 70.33333333333333,
       "width": 79,
       "height": 24,
       "text": "3 imports",
@@ -1113,10 +1123,10 @@
     {
       "id": "root_to_renderers",
       "type": "arrow",
-      "x": 931,
-      "y": 312,
-      "width": 407.66666666666674,
-      "height": 431,
+      "x": 1091,
+      "y": 322,
+      "width": 487.66666666666663,
+      "height": 472.66666666666663,
       "points": [
         [
           0,
@@ -1124,15 +1134,15 @@
         ],
         [
           0,
-          215.5
+          156.33333333333331
         ],
         [
-          -407.66666666666674,
-          215.5
+          -487.66666666666663,
+          156.33333333333331
         ],
         [
-          -407.66666666666674,
-          431
+          -487.66666666666663,
+          472.66666666666663
         ]
       ],
       "startBinding": null,
@@ -1146,8 +1156,8 @@
     {
       "id": "root_to_renderers_bg",
       "type": "rectangle",
-      "x": 703.6666666666666,
-      "y": 515.5,
+      "x": 823.6666666666667,
+      "y": 546.3333333333333,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1163,8 +1173,8 @@
     {
       "id": "root_to_renderers_label",
       "type": "text",
-      "x": 703.6666666666666,
-      "y": 515.5,
+      "x": 823.6666666666667,
+      "y": 546.3333333333333,
       "width": 79,
       "height": 24,
       "text": "4 imports",
@@ -1176,26 +1186,26 @@
     {
       "id": "root_to_utils",
       "type": "arrow",
-      "x": 1114,
+      "x": 1274,
       "y": 42,
-      "width": 200,
-      "height": 55,
+      "width": 280,
+      "height": 55.83333333333333,
       "points": [
         [
           0,
           0
         ],
         [
-          100,
+          80,
           0
         ],
         [
-          100,
-          55
+          80,
+          55.83333333333333
         ],
         [
-          200,
-          55
+          280,
+          55.83333333333333
         ]
       ],
       "startBinding": null,
@@ -1209,8 +1219,8 @@
     {
       "id": "root_to_utils_bg",
       "type": "rectangle",
-      "x": 1174.5,
-      "y": 41.5,
+      "x": 1374.5,
+      "y": 41.91666666666666,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1226,8 +1236,8 @@
     {
       "id": "root_to_utils_label",
       "type": "text",
-      "x": 1174.5,
-      "y": 41.5,
+      "x": 1374.5,
+      "y": 41.91666666666666,
       "width": 79,
       "height": 24,
       "text": "2 imports",
@@ -1239,10 +1249,10 @@
     {
       "id": "phases_to_root",
       "type": "arrow",
-      "x": 701,
-      "y": 673,
-      "width": 200,
-      "height": 511,
+      "x": 781,
+      "y": 704.6666666666666,
+      "width": 280,
+      "height": 537.6666666666666,
       "points": [
         [
           0,
@@ -1254,11 +1264,11 @@
         ],
         [
           100,
-          -511
+          -537.6666666666666
         ],
         [
-          200,
-          -511
+          280,
+          -537.6666666666666
         ]
       ],
       "startBinding": null,
@@ -1272,8 +1282,8 @@
     {
       "id": "phases_to_root_bg",
       "type": "rectangle",
-      "x": 761.5,
-      "y": 389.5,
+      "x": 881.5,
+      "y": 407.8333333333333,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1289,8 +1299,8 @@
     {
       "id": "phases_to_root_label",
       "type": "text",
-      "x": 761.5,
-      "y": 389.5,
+      "x": 881.5,
+      "y": 407.8333333333333,
       "width": 79,
       "height": 24,
       "text": "5 imports",
@@ -1302,10 +1312,10 @@
     {
       "id": "renderers_to_root",
       "type": "arrow",
-      "x": 623.3333333333333,
-      "y": 743,
-      "width": 460.66666666666674,
-      "height": 431,
+      "x": 703.3333333333334,
+      "y": 794.6666666666666,
+      "width": 540.6666666666666,
+      "height": 472.66666666666663,
       "points": [
         [
           0,
@@ -1313,15 +1323,15 @@
         ],
         [
           0,
-          -215.5
+          -256.3333333333333
         ],
         [
-          460.66666666666674,
-          -215.5
+          540.6666666666666,
+          -256.3333333333333
         ],
         [
-          460.66666666666674,
-          -431
+          540.6666666666666,
+          -472.66666666666663
         ]
       ],
       "startBinding": null,
@@ -1335,8 +1345,8 @@
     {
       "id": "renderers_to_root_bg",
       "type": "rectangle",
-      "x": 830.1666666666666,
-      "y": 515.5,
+      "x": 950.1666666666667,
+      "y": 546.3333333333333,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1352,8 +1362,8 @@
     {
       "id": "renderers_to_root_label",
       "type": "text",
-      "x": 830.1666666666666,
-      "y": 515.5,
+      "x": 950.1666666666667,
+      "y": 546.3333333333333,
       "width": 79,
       "height": 24,
       "text": "4 imports",
@@ -1365,26 +1375,26 @@
     {
       "id": "utils_to_root",
       "type": "arrow",
-      "x": 1314,
-      "y": 157,
-      "width": 200,
-      "height": 125,
+      "x": 1554,
+      "y": 162.83333333333331,
+      "width": 280,
+      "height": 129.16666666666669,
       "points": [
         [
           0,
           0
         ],
         [
-          -100,
+          -140,
           0
         ],
         [
-          -100,
-          125
+          -140,
+          129.16666666666669
         ],
         [
-          -200,
-          125
+          -280,
+          129.16666666666669
         ]
       ],
       "startBinding": null,
@@ -1398,8 +1408,8 @@
     {
       "id": "utils_to_root_bg",
       "type": "rectangle",
-      "x": 1174.5,
-      "y": 191.5,
+      "x": 1374.5,
+      "y": 199.41666666666666,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1415,8 +1425,8 @@
     {
       "id": "utils_to_root_label",
       "type": "text",
-      "x": 1174.5,
-      "y": 191.5,
+      "x": 1374.5,
+      "y": 199.41666666666666,
       "width": 79,
       "height": 24,
       "text": "2 imports",
@@ -1429,25 +1439,25 @@
       "id": "tui_to_root",
       "type": "arrow",
       "x": 198,
-      "y": 145,
-      "width": 703,
-      "height": 137,
+      "y": 167.66666666666666,
+      "width": 863,
+      "height": 124.33333333333334,
       "points": [
         [
           0,
           0
         ],
         [
-          351.5,
+          451.5,
           0
         ],
         [
-          351.5,
-          137
+          451.5,
+          124.33333333333334
         ],
         [
-          703,
-          137
+          863,
+          124.33333333333334
         ]
       ],
       "startBinding": null,
@@ -1461,8 +1471,8 @@
     {
       "id": "tui_to_root_bg",
       "type": "rectangle",
-      "x": 506.5,
-      "y": 185.5,
+      "x": 586.5,
+      "y": 201.83333333333331,
       "width": 86,
       "height": 24,
       "strokeColor": "transparent",
@@ -1478,8 +1488,8 @@
     {
       "id": "tui_to_root_label",
       "type": "text",
-      "x": 506.5,
-      "y": 185.5,
+      "x": 586.5,
+      "y": 201.83333333333331,
       "width": 86,
       "height": 24,
       "text": "11 imports",
@@ -1492,25 +1502,25 @@
       "id": "tui_to_phases",
       "type": "arrow",
       "x": 198,
-      "y": 365,
-      "width": 200,
-      "height": 232,
+      "y": 391,
+      "width": 280,
+      "height": 236.33333333333334,
       "points": [
         [
           0,
           0
         ],
         [
-          100,
+          180,
           0
         ],
         [
-          100,
-          -232
+          180,
+          -236.33333333333334
         ],
         [
-          200,
-          -232
+          280,
+          -236.33333333333334
         ]
       ],
       "startBinding": null,
@@ -1524,8 +1534,8 @@
     {
       "id": "tui_to_phases_bg",
       "type": "rectangle",
-      "x": 258.5,
-      "y": 221,
+      "x": 298.5,
+      "y": 244.83333333333331,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1541,8 +1551,8 @@
     {
       "id": "tui_to_phases_label",
       "type": "text",
-      "x": 258.5,
-      "y": 221,
+      "x": 298.5,
+      "y": 244.83333333333331,
       "width": 79,
       "height": 24,
       "text": "3 imports",
@@ -1555,25 +1565,25 @@
       "id": "tui_to_renderers",
       "type": "arrow",
       "x": 198,
-      "y": 585,
-      "width": 295.3333333333333,
-      "height": 188,
+      "y": 614.3333333333334,
+      "width": 375.33333333333337,
+      "height": 210.33333333333326,
       "points": [
         [
           0,
           0
         ],
         [
-          147.66666666666666,
+          247.66666666666669,
           0
         ],
         [
-          147.66666666666666,
-          188
+          247.66666666666669,
+          210.33333333333326
         ],
         [
-          295.3333333333333,
-          188
+          375.33333333333337,
+          210.33333333333326
         ]
       ],
       "startBinding": null,
@@ -1587,8 +1597,8 @@
     {
       "id": "tui_to_renderers_bg",
       "type": "rectangle",
-      "x": 306.16666666666663,
-      "y": 651,
+      "x": 346.1666666666667,
+      "y": 691.5,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1604,8 +1614,8 @@
     {
       "id": "tui_to_renderers_label",
       "type": "text",
-      "x": 306.16666666666663,
-      "y": 651,
+      "x": 346.1666666666667,
+      "y": 691.5,
       "width": 79,
       "height": 24,
       "text": "4 imports",
@@ -1618,25 +1628,25 @@
       "id": "tui_to_utils",
       "type": "arrow",
       "x": 198,
-      "y": 805,
-      "width": 1116,
-      "height": 588,
+      "y": 837.6666666666666,
+      "width": 1356,
+      "height": 609.8333333333333,
       "points": [
         [
           0,
           0
         ],
         [
-          558,
+          758,
           0
         ],
         [
-          558,
-          -588
+          758,
+          -609.8333333333333
         ],
         [
-          1116,
-          -588
+          1356,
+          -609.8333333333333
         ]
       ],
       "startBinding": null,
@@ -1650,8 +1660,8 @@
     {
       "id": "tui_to_utils_bg",
       "type": "rectangle",
-      "x": 716.5,
-      "y": 483,
+      "x": 836.5,
+      "y": 504.75,
       "width": 79,
       "height": 24,
       "strokeColor": "transparent",
@@ -1667,8 +1677,8 @@
     {
       "id": "tui_to_utils_label",
       "type": "text",
-      "x": 716.5,
-      "y": 483,
+      "x": 836.5,
+      "y": 504.75,
       "width": 79,
       "height": 24,
       "text": "2 imports",

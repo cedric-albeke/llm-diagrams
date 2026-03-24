@@ -121,12 +121,18 @@ export async function renderExcalidraw(
         roundness: { type: 3 },
       })
 
+      const titleText = zone.label.toUpperCase()
+      const titleWidth = titleText.length * 13 + 20
+      const titleHeight = 30
+
       elements.push({
         id: `zone_${zone.id}_label`,
         type: 'text',
         x: zone.x + 14,
-        y: zone.y + 10,
-        text: zone.label.toUpperCase(),
+        y: zone.y + 12,
+        width: titleWidth,
+        height: titleHeight,
+        text: titleText,
         fontSize: 20,
         fontFamily: 2,
         fontWeight: 700,
@@ -242,12 +248,14 @@ export async function renderExcalidraw(
       const adx = end.x - start.x
       const ady = end.y - start.y
 
+      const staggerOffset = (edgeIndex - diagram.edges.length / 2) * 20
+
       let points: [number, number][]
       if (horizontal) {
-        const midX = adx / 2
+        const midX = adx / 2 + staggerOffset
         points = [[0, 0], [midX, 0], [midX, ady], [adx, ady]]
       } else {
-        const midY = ady / 2
+        const midY = ady / 2 + staggerOffset
         points = [[0, 0], [0, midY], [adx, midY], [adx, ady]]
       }
 

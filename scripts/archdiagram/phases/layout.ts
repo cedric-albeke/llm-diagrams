@@ -40,15 +40,15 @@ export async function computeLayout(
     layoutOptions: {
       'elk.algorithm': 'layered',
       'elk.direction': direction,
-      'elk.spacing.nodeNode': '40',
-      'elk.layered.spacing.nodeNodeBetweenLayers': '100',
+      'elk.spacing.nodeNode': '60',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '140',
       'elk.edgeRouting': 'ORTHOGONAL',
       'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
     },
     children: archGraph.groups.map(group => ({
       id: sanitizeId(group.name),
       layoutOptions: {
-        'elk.padding': '[top=60,left=20,bottom=20,right=20]',
+        'elk.padding': '[top=70,left=20,bottom=20,right=20]',
         'elk.algorithm': 'layered',
         'elk.direction': 'DOWN',
       },
