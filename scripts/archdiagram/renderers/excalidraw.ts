@@ -176,87 +176,100 @@ export async function renderExcalidraw(
       })
     }
 
-    const portSlots = new Map<string, { side: string; count: number; used: number }>()
-
-    function getPortKey(zoneId: string, side: string): string {
-      return `${zoneId}:${side}`
+    interface EdgeRoute {
+      edge: LayoutEdge
+      sourceZone: LayoutZone
+      targetZone: LayoutZone
+      srcSide: string
+      tgtSide: string
     }
 
+    const routes: EdgeRoute[] = []
     for (const edge of diagram.edges) {
       const sourceZone = diagram.zones.find(z => `zone_${z.id}` === edge.sourceId)
       const targetZone = diagram.zones.find(z => `zone_${z.id}` === edge.targetId)
       if (!sourceZone || !targetZone) continue
 
-      const srcCx = sourceZone.x + sourceZone.width / 2
-      const srcCy = sourceZone.y + sourceZone.height / 2
-      const tgtCx = targetZone.x + targetZone.width / 2
-      const tgtCy = targetZone.y + targetZone.height / 2
-      const dx = tgtCx - srcCx
-      const dy = tgtCy - srcCy
+      const dx = (targetZone.x + targetZone.width / 2) - (sourceZone.x + sourceZone.width / 2)
+      const dy = (targetZone.y + targetZone.height / 2) - (sourceZone.y + sourceZone.height / 2)
       const horizontal = Math.abs(dx) > Math.abs(dy)
       const srcSide = horizontal ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'bottom' : 'top')
       const tgtSide = horizontal ? (dx > 0 ? 'left' : 'right') : (dy > 0 ? 'top' : 'bottom')
-
-      const srcKey = getPortKey(edge.sourceId, srcSide)
-      const tgtKey = getPortKey(edge.targetId, tgtSide)
-      if (!portSlots.has(srcKey)) portSlots.set(srcKey, { side: srcSide, count: 0, used: 0 })
-      if (!portSlots.has(tgtKey)) portSlots.set(tgtKey, { side: tgtSide, count: 0, used: 0 })
-      portSlots.get(srcKey)!.count++
-      portSlots.get(tgtKey)!.count++
+      routes.push({ edge, sourceZone, targetZone, srcSide, tgtSide })
     }
 
-    let edgeIndex = 0
-    for (const edge of diagram.edges) {
-      const sourceZone = diagram.zones.find(z => `zone_${z.id}` === edge.sourceId)
-      const targetZone = diagram.zones.find(z => `zone_${z.id}` === edge.targetId)
-      if (!sourceZone || !targetZone) continue
+    const portCounts = new Map<string, number>()
+    const portUsed = new Map<string, number>()
+    for (const r of routes) {
+      const sk = `${r.edge.sourceId}:${r.srcSide}`
+      const tk = `${r.edge.targetId}:${r.tgtSide}`
+      portCounts.set(sk, (portCounts.get(sk) ?? 0) + 1)
+      portCounts.set(tk, (portCounts.get(tk) ?? 0) + 1)
+    }
 
-      const srcCx = sourceZone.x + sourceZone.width / 2
-      const srcCy = sourceZone.y + sourceZone.height / 2
-      const tgtCx = targetZone.x + targetZone.width / 2
-      const tgtCy = targetZone.y + targetZone.height / 2
-      const dx = tgtCx - srcCx
-      const dy = tgtCy - srcCy
-      const horizontal = Math.abs(dx) > Math.abs(dy)
-      const srcSide = horizontal ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'bottom' : 'top')
-      const tgtSide = horizontal ? (dx > 0 ? 'left' : 'right') : (dy > 0 ? 'top' : 'bottom')
+    const pairIndex = new Map<string, number>()
 
-      const srcSlot = portSlots.get(getPortKey(edge.sourceId, srcSide))!
-      const tgtSlot = portSlots.get(getPortKey(edge.targetId, tgtSide))!
-      const srcIdx = srcSlot.used++
-      const tgtIdx = tgtSlot.used++
+    for (const r of routes) {
+      const { edge, sourceZone, targetZone, srcSide, tgtSide } = r
+      const sk = `${edge.sourceId}:${srcSide}`
+      const tk = `${edge.targetId}:${tgtSide}`
+      const si = portUsed.get(sk) ?? 0
+      const ti = portUsed.get(tk) ?? 0
+      portUsed.set(sk, si + 1)
+      portUsed.set(tk, ti + 1)
+      const sTotal = portCounts.get(sk) ?? 1
+      const tTotal = portCounts.get(tk) ?? 1
 
-      function distributeAlongEdge(
-        zone: LayoutZone, side: string, idx: number, total: number
-      ): { x: number; y: number } {
-        const margin = 30
+      const pairKey = [edge.sourceId, edge.targetId].sort().join('|')
+      const pi = pairIndex.get(pairKey) ?? 0
+      pairIndex.set(pairKey, pi + 1)
+
+      function portPos(zone: LayoutZone, side: string, idx: number, total: number): { x: number; y: number } {
+        const margin = 40
         if (side === 'right' || side === 'left') {
           const span = zone.height - 2 * margin
-          const step = total > 1 ? span / (total - 1) : 0
-          const py = zone.y + margin + step * idx
-          return { x: side === 'right' ? zone.x + zone.width : zone.x, y: py }
+          const offset = total > 1 ? margin + span * idx / (total - 1) : zone.height / 2
+          return { x: side === 'right' ? zone.x + zone.width : zone.x, y: zone.y + offset }
         }
         const span = zone.width - 2 * margin
-        const step = total > 1 ? span / (total - 1) : 0
-        const px = zone.x + margin + step * idx
-        return { x: px, y: side === 'bottom' ? zone.y + zone.height : zone.y }
+        const offset = total > 1 ? margin + span * idx / (total - 1) : zone.width / 2
+        return { x: zone.x + offset, y: side === 'bottom' ? zone.y + zone.height : zone.y }
       }
 
-      const start = distributeAlongEdge(sourceZone, srcSide, srcIdx, srcSlot.count)
-      const end = distributeAlongEdge(targetZone, tgtSide, tgtIdx, tgtSlot.count)
-
+      const start = portPos(sourceZone, srcSide, si, sTotal)
+      const end = portPos(targetZone, tgtSide, ti, tTotal)
       const adx = end.x - start.x
       const ady = end.y - start.y
 
-      const staggerOffset = (edgeIndex - diagram.edges.length / 2) * 20
-
+      const gap = 30 + pi * 25
       let points: [number, number][]
-      if (horizontal) {
-        const midX = adx / 2 + staggerOffset
-        points = [[0, 0], [midX, 0], [midX, ady], [adx, ady]]
+      let labelAnchorX: number
+      let labelAnchorY: number
+
+      if (srcSide === 'right' && tgtSide === 'left') {
+        const mx = gap
+        points = [[0, 0], [mx, 0], [mx, ady], [adx, ady]]
+        labelAnchorX = start.x + mx
+        labelAnchorY = start.y + ady / 2
+      } else if (srcSide === 'left' && tgtSide === 'right') {
+        const mx = -gap
+        points = [[0, 0], [mx, 0], [mx, ady], [adx, ady]]
+        labelAnchorX = start.x + mx
+        labelAnchorY = start.y + ady / 2
+      } else if (srcSide === 'bottom' && tgtSide === 'top') {
+        const my = gap
+        points = [[0, 0], [0, my], [adx, my], [adx, ady]]
+        labelAnchorX = start.x + adx / 2
+        labelAnchorY = start.y + my
+      } else if (srcSide === 'top' && tgtSide === 'bottom') {
+        const my = -gap
+        points = [[0, 0], [0, my], [adx, my], [adx, ady]]
+        labelAnchorX = start.x + adx / 2
+        labelAnchorY = start.y + my
       } else {
-        const midY = ady / 2 + staggerOffset
-        points = [[0, 0], [0, midY], [adx, midY], [adx, ady]]
+        points = [[0, 0], [adx, ady]]
+        labelAnchorX = start.x + adx / 2
+        labelAnchorY = start.y + ady / 2
       }
 
       elements.push({
@@ -279,19 +292,17 @@ export async function renderExcalidraw(
       if (edge.label) {
         const labelText = edge.label
         const labelWidth = labelText.length * 7 + 16
-        const perpOffset = 16
-        const labelMidX = start.x + adx / 2
-        const labelMidY = start.y + ady / 2
-        const offsetX = horizontal ? 0 : perpOffset
-        const offsetY = horizontal ? -perpOffset : 0
+        const isVerticalSeg = srcSide === 'right' || srcSide === 'left'
+        const lx = labelAnchorX + (isVerticalSeg ? 8 : -labelWidth / 2)
+        const ly = labelAnchorY + (isVerticalSeg ? -12 : -20)
 
         elements.push({
           id: `${edge.id}_bg`,
           type: 'rectangle',
-          x: labelMidX - labelWidth / 2 + offsetX,
-          y: labelMidY - 12 + offsetY,
+          x: lx,
+          y: ly,
           width: labelWidth,
-          height: 24,
+          height: 22,
           strokeColor: 'transparent',
           backgroundColor: '#ffffff',
           opacity: 95,
@@ -304,10 +315,10 @@ export async function renderExcalidraw(
         elements.push({
           id: `${edge.id}_label`,
           type: 'text',
-          x: labelMidX - labelWidth / 2 + offsetX,
-          y: labelMidY - 12 + offsetY,
+          x: lx,
+          y: ly,
           width: labelWidth,
-          height: 24,
+          height: 22,
           text: labelText,
           fontSize: 11,
           fontFamily: 2,
@@ -315,8 +326,6 @@ export async function renderExcalidraw(
           verticalAlign: 'middle',
         })
       }
-
-      edgeIndex++
     }
 
     const scene: ExcalidrawScene = {
