@@ -84,7 +84,7 @@ describe('renderExcalidraw', () => {
 
     const arrow = elements.find(e => e.id === 'edge_ab' && e.type === 'arrow')
     expect(arrow).toBeDefined()
-    expect(arrow?.points?.length).toBe(2)
+    expect(arrow?.points?.length).toBeGreaterThanOrEqual(2)
   })
 
   it('zone rectangles are present with semi-transparent opacity', async () => {
@@ -109,7 +109,7 @@ describe('renderExcalidraw', () => {
 
     const zoneLabel = elements.find(e => e.id === 'zone_z_backend_label' && e.type === 'text')
     expect(zoneLabel?.text).toBe('BACKEND')
-    expect(zoneLabel?.fontSize).toBe(18)
+    expect(zoneLabel?.fontSize).toBe(20)
   })
 
   it('edge labels have white background for readability', async () => {

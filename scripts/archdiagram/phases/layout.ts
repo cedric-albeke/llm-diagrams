@@ -48,7 +48,7 @@ export async function computeLayout(
     children: archGraph.groups.map(group => ({
       id: sanitizeId(group.name),
       layoutOptions: {
-        'elk.padding': '[top=50,left=20,bottom=20,right=20]',
+        'elk.padding': '[top=60,left=20,bottom=20,right=20]',
         'elk.algorithm': 'layered',
         'elk.direction': 'DOWN',
       },
