@@ -11,7 +11,8 @@
     "docs:diagram:subscription": "tsx scripts/generate-architecture-diagram.ts --mode subscription",
     "docs:diagram:openai": "tsx scripts/generate-architecture-diagram.ts --mode openai",
     "docs:diagram:openrouter": "tsx scripts/generate-architecture-diagram.ts --mode openrouter",
-    "docs:diagram:llmapi": "tsx scripts/generate-architecture-diagram.ts --mode llmapi"
+    "docs:diagram:llmapi": "tsx scripts/generate-architecture-diagram.ts --mode llmapi",
+    "tui": "tsx scripts/archdiagram/tui/index.tsx"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "latest",

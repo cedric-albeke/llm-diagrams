@@ -186,6 +186,59 @@ npx vitest run --reporter=verbose  # Verbose output
 - TypeScript project with a `tsconfig.json`
 - Single tsconfig (monorepo/multi-tsconfig support planned for v2)
 
+## TUI (Interactive Mode)
+
+Launch the interactive terminal UI:
+
+```bash
+npm run tui
+```
+
+### Features
+
+- **Wizard flow**: step-by-step provider selection → config editing → format picker → confirmation
+- **Live dashboard**: real-time progress for all 4 pipeline phases (analyze, reason, layout, render)
+- **Post-run preview**: Mermaid diagram text preview directly in terminal
+- **Config save**: optionally persist settings to `archdiagram.config.ts`
+
+### Screenshot
+
+```
+╭─────────────────────────────────────────────────────╮
+│ llm-diagrams — Architecture Diagram Generator       │
+╰─────────────────────────────────────────────────────╯
+  Welcome! Generate an architecture diagram for your
+  TypeScript project.
+
+  > Start wizard
+    Quick run (static mode)
+    Quit
+```
+
+### Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| `↑` / `↓` | Navigate options |
+| `Enter` | Select / confirm |
+| `Space` | Toggle checkbox |
+| `Escape` | Go back |
+| `q` | Quit (from any screen except during pipeline execution) |
+
+### Requirements
+
+- Node.js 20+
+- TypeScript project with `tsconfig.json`
+- For `full` / `openai` / `openrouter` / `llmapi` modes: respective API key in environment
+- For `subscription` mode: `claude login` completed
+
+### Non-interactive / CI mode
+
+```bash
+npm run tui -- --no-interactive   # exits immediately with code 0
+npm run tui -- --help             # show help and exit
+```
+
 ## License
 
 MIT

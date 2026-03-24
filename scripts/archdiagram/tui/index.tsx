@@ -1,19 +1,33 @@
-import React, { useEffect } from 'react'
-import { render, Box, Text, useApp } from 'ink'
+#!/usr/bin/env tsx
+import React from 'react'
+import { render } from 'ink'
+import { App } from './App.js'
 
-function App(): React.JSX.Element {
-  const { exit } = useApp()
+const args = process.argv.slice(2)
 
-  useEffect(() => {
-    exit()
-  }, [exit])
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(`
+llm-diagrams TUI v0.1.0
 
-  return (
-    <Box borderStyle="round" borderColor="cyan" paddingX={2}>
-      <Text bold color="cyan">llm-diagrams TUI</Text>
-      <Text dimColor> v0.1.0 — Architecture diagram generator</Text>
-    </Box>
-  )
+Usage: npm run tui [options]
+
+Options:
+  --help, -h          Show this help message
+  --no-interactive    Exit immediately (for CI/smoke testing)
+
+Keyboard shortcuts:
+  ↑ / ↓              Navigate options
+  Enter               Select / confirm
+  Space               Toggle checkbox
+  Escape              Go back
+  q                   Quit (from any screen except during pipeline execution)
+`)
+  process.exit(0)
+}
+
+if (args.includes('--no-interactive')) {
+  console.log('llm-diagrams TUI v0.1.0 — non-interactive mode, exiting.')
+  process.exit(0)
 }
 
 render(<App />)
