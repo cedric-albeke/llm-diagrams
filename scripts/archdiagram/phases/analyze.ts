@@ -19,11 +19,15 @@ export async function extractImportGraph(config: AnalysisConfig): Promise<Import
   const srcDirResolved = path.resolve(config.srcDir)
   console.log(`[analyze] Scanning: ${srcDirResolved}`)
 
+  const safeExcludePatterns = config.exclude.filter(
+    (p) => !p.includes('*') && !p.startsWith('!') && p !== 'node_modules'
+  )
+
   const cruiseResult = await cruise([config.srcDir], {
     tsPreCompilationDeps: true,
     tsConfig: { fileName: config.tsConfigPath },
     doNotFollow: {
-      path: ['node_modules', ...config.exclude],
+      path: ['node_modules', ...safeExcludePatterns],
     },
     ruleSet: {},
   })
